@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d3d3d3"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:id="@+id/total_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_white"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="100dp"
+        android:fontFamily="@font/allan"
+        android:text="@string/break_one"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="50dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/choices_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="300dp"
+        android:backgroundTint="@null"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/Student"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="35dp"
+            android:background="@drawable/rounded_white"
+            android:fontFamily="@font/allan"
+            android:text="Student"
+            android:textColor="@color/black"
+            android:backgroundTint="@null"
+            android:textSize="50dp"
+            android:textStyle="bold|italic|normal" />
+
+        <Button
+            android:id="@+id/Teacher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="35dp"
+            android:fontFamily="@font/allan"
+            android:background="@drawable/rounded_white"
+            android:text="Teacher"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@null"
+            android:textColor="@color/black"
+            android:textSize="50dp"
+            android:textStyle="bold|italic|normal" />
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

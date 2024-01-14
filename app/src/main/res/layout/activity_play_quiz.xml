@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/hd_wallpaper_chalkboard_kiss_blue_chalk_education_red_s10_cutout_school_student_teacher_yellow"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlayQuiz">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/total_question"
+        android:text="Joy in Learning English Textbook
+         Quiz App"
+        android:layout_centerVertical="true"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:layout_marginBottom="40dp"
+        android:layout_above="@id/playbutton"/>
+        />
+
+    <ImageButton
+        android:id="@+id/playbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="TODO"
+        android:padding="1dp"
+        android:src="@drawable/button_play" />
+
+</RelativeLayout>

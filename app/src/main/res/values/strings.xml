@@ -1,0 +1,9 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string name="app_name">Joy in Learning English Textbook</string>
+    <string-array name="role" fontsize="40dp" android:fontFamily="@font/roboto_mono_bold">
+        <item>Student</item>
+        <item>Teacher</item>
+    </string-array>
+    <string name="break_one">Joy in Learning \n English Textbook \n Quiz App</string>
+
+</resources>

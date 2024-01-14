@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
+        <item>@font/acme</item>
+        <item>@font/allan</item>
+        <item>@font/allerta</item>
+        <item>@font/atomic_age</item>
+        <item>@font/basic</item>
+        <item>@font/cutive</item>
+        <item>@font/jockey_one</item>
+        <item>@font/playfair_display</item>
+        <item>@font/playfair_display_black</item>
+        <item>@font/playfair_display_bold</item>
+        <item>@font/roboto_mono_bold</item>
+        <item>@font/roboto_mono_bold_italic</item>
+        <item>@font/roboto_mono_medium</item>
+    </array>
+</resources>
