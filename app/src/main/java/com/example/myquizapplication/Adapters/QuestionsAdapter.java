@@ -18,10 +18,14 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.view
 
     Context context;
     ArrayList<QuestionModel>list;
+    String categoryName;
+    DeleteListener listener;
 
-    public QuestionsAdapter(Context context, ArrayList<QuestionModel> list) {
+    public QuestionsAdapter(Context context, ArrayList<QuestionModel> list, String categoryName, DeleteListener listener) {
         this.context = context;
         this.list = list;
+        this.categoryName = categoryName;
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,6 +44,15 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.view
 
         holder.binding.questions.setText(model.getQuestion());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                listener.onLongClick(position,list.get(position).getKey());
+
+            }
+        });
+
     }
 
     @Override
@@ -56,4 +69,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.view
             binding = ItemQuestionsBinding.bind(itemView);
         }
     }
+    public interface DeleteListener{
+
+        public void onLongClick(int position,String id);
+    }
+
 }

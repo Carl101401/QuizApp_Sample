@@ -1,6 +1,9 @@
 package com.example.myquizapplication;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ public class Students2 extends AppCompatActivity {
     ArrayList<CategoryModel2> list;
     CategoryAdapter2 adapter;
     ProgressDialog progressDialog;
+    Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,17 @@ public class Students2 extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         list = new ArrayList<>();
+
+        loadingDialog = new Dialog(this);
+        loadingDialog.setContentView(R.layout.loading_dialog);
+
+        if (loadingDialog.getWindow()!=null){
+
+            loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            loadingDialog.setCancelable(false);
+        }
+        loadingDialog.show();
+
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         binding.recyCategory.setLayoutManager(layoutManager);
@@ -65,11 +80,16 @@ public class Students2 extends AppCompatActivity {
 
                     }
                     adapter.notifyDataSetChanged();
+                    loadingDialog.dismiss();
 
                 }
                 else{
                     Toast.makeText(Students2.this, "Category Not Exist", Toast.LENGTH_SHORT).show();
+
+                    loadingDialog.dismiss();
                 }
+
+
 
             }
 

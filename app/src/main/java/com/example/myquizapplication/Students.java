@@ -104,7 +104,6 @@ int id = 0 ;
     }
 
     private void findid() {
-        studentList=(TextView)findViewById(R.id.Studentlist);
         User=(EditText) findViewById(R.id.name);
         Pass=(EditText) findViewById(R.id.pass);
         Fname=(EditText) findViewById(R.id.firstname);

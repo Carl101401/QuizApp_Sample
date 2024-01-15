@@ -100,7 +100,7 @@
                                             if (position==list.size()){
 
                                                 Intent intent = new Intent(QuestionActivity2.this,ScoreActivity.class);
-                                                intent.putExtra("score",score);
+                                                intent.putExtra("correctAnsw",score);
                                                 intent.putExtra("totalQuestion",list.size());
                                                 startActivity(intent);
                                                 finish();
