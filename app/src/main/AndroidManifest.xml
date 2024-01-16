@@ -12,6 +12,16 @@
         android:theme="@style/Theme.MyQuizApplication"
         tools:targetApi="31">
         <activity
+            android:name=".Reviewer"
+            android:exported="false" />
+        <activity
+            android:name=".AddReviewer"
+            android:exported="false"
+            android:parentActivityName=".Teachers" />
+        <activity
+            android:name=".QuizReviewer"
+            android:exported="false" />
+        <activity
             android:name=".QuestionActivity"
             android:exported="false" />
         <activity
@@ -27,9 +37,6 @@
             android:name=".ViewStudent"
             android:exported="false"
             android:parentActivityName=".Students" />
-        <activity
-            android:name=".TrueorFalse"
-            android:exported="false" />
         <activity
             android:name=".ScoreActivity"
             android:exported="false" />

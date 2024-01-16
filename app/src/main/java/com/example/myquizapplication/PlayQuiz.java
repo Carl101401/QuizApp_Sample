@@ -22,7 +22,7 @@ public class PlayQuiz extends AppCompatActivity {
         btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),Students2.class);
+                Intent intent = new Intent(getApplicationContext(),QuizReviewer.class);
                 startActivity(intent);
             }
         });

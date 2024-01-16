@@ -26,11 +26,12 @@
         android:textSize="50dp" />
 
     <Button
-        android:id="@+id/students"
-
+        android:id="@+id/addStudent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/teachers"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="@color/white"
         android:padding="20dp"
         android:text="Students"
@@ -38,10 +39,12 @@
         android:textSize="30dp" />
 
     <Button
-        android:id="@+id/score"
+        android:id="@+id/studentScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/students"
+        android:layout_below="@id/addStudent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="@color/white"
         android:padding="20dp"
         android:text="Score"
@@ -52,7 +55,9 @@
         android:id="@+id/Addquiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/score"
+        android:layout_below="@id/studentScore"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="@color/white"
         android:padding="20dp"
         android:text="Add Quiz"
@@ -64,6 +69,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/Addquiz"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="@color/white"
         android:padding="20dp"
         android:text="Add Reviewer"
@@ -75,7 +82,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/Addreviewer"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="@color/white"
         android:padding="10dp"
         android:text="SIGNOUT"

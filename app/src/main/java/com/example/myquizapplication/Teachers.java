@@ -16,8 +16,8 @@ public class Teachers extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teachers);
-        btnstudent = (Button) findViewById(R.id.students);
-        btnscore = (Button) findViewById(R.id.score);
+        btnstudent = (Button) findViewById(R.id.addStudent);
+        btnscore = (Button) findViewById(R.id.studentScore);
         btnaddquiz = (Button) findViewById(R.id.Addquiz);
         btnaddreviewer= (Button) findViewById(R.id.Addreviewer);
         btnsignout= (Button) findViewById(R.id.Signout);
@@ -49,7 +49,7 @@ public class Teachers extends AppCompatActivity {
         btnaddreviewer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),NewActivity.class);
+                Intent intent = new Intent(getApplicationContext(),AddReviewer.class);
                 startActivity(intent);
             }
 

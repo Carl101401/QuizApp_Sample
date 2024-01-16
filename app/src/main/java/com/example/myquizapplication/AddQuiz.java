@@ -177,64 +177,6 @@ public class AddQuiz extends AppCompatActivity {
 
             }
 
-
-            private void UploadCategory() {
-                final String categoryName = inputCategoryName.getText().toString().trim();
-
-                // Check if the category name already exists
-                boolean categoryExists = checkIfCategoryExists(categoryName);
-
-                if (categoryExists) {
-                    // Display a message or handle accordingly (category already exists)
-                    Toast.makeText(AddQuiz.this, "Category already exists", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                    return;
-                }
-                final StorageReference reference = storage.getReference().child("category")
-                        .child(new Date().getTime() + "");
-                reference.putFile(ImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                CategoryModel categoryModel = new CategoryModel();
-                                categoryModel.setCategoryName(inputCategoryName.getText().toString());
-                                categoryModel.setSetNum(0);
-                                categoryModel.setCategoryImage(uri.toString());
-
-                                int categoryCount = list.size();
-                                int newIndex = categoryCount;
-                                list.add(categoryModel);
-                                adapter.notifyItemInserted(newIndex);
-
-                                Picasso.get().load(uri.toString()).into(categoryImage);
-
-                                // Create or get the unique ID for the category
-                                String categoryId = database.getReference().child("categories").push().getKey();
-                                categoryModel.setKey(categoryId); // Set the unique ID
-
-                                database.getReference().child("categories").child(categoryId)
-                                        .setValue(categoryModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Toast.makeText(AddQuiz.this, "Data Uploaded", Toast.LENGTH_SHORT).show();
-                                                progressDialog.dismiss();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(AddQuiz.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                progressDialog.dismiss();
-                                            }
-                                        });
-                            }
-                        });
-
-                    }
-                });
-            }
         });
     }
 
@@ -247,13 +189,18 @@ public class AddQuiz extends AppCompatActivity {
                 reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
+
+                        Toast.makeText(AddQuiz.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+
                         CategoryModel categoryModel = new CategoryModel();
                         categoryModel.setCategoryName(inputCategoryName.getText().toString());
                         categoryModel.setSetNum(0);
                         categoryModel.setCategoryImage(uri.toString());
 
-                        database.getReference().child("categories").child("category"+i++)
-                                .setValue(categoryModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        database.getReference().child("categories")
+                                .push()
+                                .setValue(categoryModel)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(AddQuiz.this, "Data Uploaded", Toast.LENGTH_SHORT).show();
