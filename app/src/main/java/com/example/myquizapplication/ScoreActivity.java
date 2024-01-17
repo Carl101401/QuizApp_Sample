@@ -3,6 +3,7 @@ package com.example.myquizapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +20,7 @@ public class ScoreActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        int correct = getIntent().getIntExtra("corrrectAns",0);
+        int correct = getIntent().getIntExtra("correctAnsw",0);
         int totalQuestion = getIntent().getIntExtra("totalQuestion",0);
         int wrong = totalQuestion - correct;
 
@@ -47,9 +48,15 @@ public class ScoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(ScoreActivity.this, QuizReviewer.class);
+                startActivity(intent);
+
                 finish();
             }
         });
-
+    }
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        //Toast.makeText(ScoreActivity.this, "Choose Retry or Quit", Toast.LENGTH_SHORT).show();
     }
 }

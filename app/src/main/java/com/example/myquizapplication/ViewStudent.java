@@ -48,4 +48,8 @@ MyAdapter myAdapter;
 
     private void findid() { recyclerView = findViewById(R.id.rv);
     }
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
+    }
 }

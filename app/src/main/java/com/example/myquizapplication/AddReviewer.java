@@ -71,13 +71,15 @@ public class AddReviewer extends AppCompatActivity {
         uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadVideo(video);
+                uploadVideo(video, "English Reviewer");
+
             }
         });
     }
 
-    private void uploadVideo(Uri uri) {
-        StorageReference reference = storageReference.child("video/"+ UUID.randomUUID().toString());
+    private void uploadVideo(Uri uri, String customVideoName) {
+        StorageReference reference = storageReference.child("video/" + customVideoName);
+
         reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -97,4 +99,5 @@ public class AddReviewer extends AppCompatActivity {
             }
         });
     }
+
 }

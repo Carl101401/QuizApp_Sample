@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/material_dynamic_neutral10"
     tools:context=".SetsActivity2">
 
     <androidx.appcompat.widget.Toolbar
@@ -35,7 +35,7 @@
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="8dp"
         android:columnWidth="400dp"
         android:gravity="center"

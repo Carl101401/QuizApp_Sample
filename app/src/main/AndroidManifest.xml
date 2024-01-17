@@ -13,14 +13,16 @@
         tools:targetApi="31">
         <activity
             android:name=".Reviewer"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".QuizReviewer"/>
         <activity
             android:name=".AddReviewer"
             android:exported="false"
             android:parentActivityName=".Teachers" />
         <activity
             android:name=".QuizReviewer"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".QuestionActivity"
             android:exported="false" />
@@ -57,7 +59,8 @@
             android:exported="false" />
         <activity
             android:name=".Teachers"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".Students"
             android:exported="false"
@@ -65,13 +68,15 @@
         <activity
             android:name=".PlayQuiz"
             android:exported="false"
+            android:theme="@style/AppTheme"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".NewActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

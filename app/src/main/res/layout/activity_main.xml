@@ -12,13 +12,13 @@
         android:id="@+id/total_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_white"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="25dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginTop="50dp"
         android:layout_marginBottom="100dp"
+        android:background="@drawable/rounded_white"
         android:fontFamily="@font/allan"
         android:text="@string/break_one"
         android:textAlignment="center"
@@ -40,12 +40,12 @@
             android:id="@+id/Student"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="35dp"
+            android:layout_margin="50dp"
             android:background="@drawable/rounded_white"
+            android:backgroundTint="@null"
             android:fontFamily="@font/allan"
             android:text="Student"
             android:textColor="@color/black"
-            android:backgroundTint="@null"
             android:textSize="50dp"
             android:textStyle="bold|italic|normal" />
 
@@ -53,16 +53,15 @@
             android:id="@+id/Teacher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="35dp"
-            android:fontFamily="@font/allan"
-            android:background="@drawable/rounded_white"
-            android:text="Teacher"
+            android:layout_margin="50dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_white"
             android:backgroundTint="@null"
+            android:fontFamily="@font/allan"
+            android:text="Teacher"
             android:textColor="@color/black"
             android:textSize="50dp"
             android:textStyle="bold|italic|normal" />
-
 
 
     </LinearLayout>

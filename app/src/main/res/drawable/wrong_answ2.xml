@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <stroke
-        android:color="#F44336"
-        android:width="2dp"/>
-    <corners
-        android:radius="20dp"/>
-
+    <item>
+        <shape>
+            <stroke
+                android:color="#F44336"
+                android:width="2dp" tools:ignore="StateListReachable" />
+            <corners
+                android:radius="20dp"/>
+        </shape>
+    </item>
 
 </selector>

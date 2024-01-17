@@ -114,4 +114,8 @@ int id = 0 ;
         Edit = findViewById(R.id.editbutton);
 
     }
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
+    }
 }

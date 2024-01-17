@@ -4,7 +4,7 @@
     import android.content.Intent;
     import android.os.Bundle;
     import android.os.CountDownTimer;
-    import android.util.Log;
+
     import android.view.View;
     import android.view.animation.DecelerateInterpolator;
     import android.widget.Button;
@@ -111,6 +111,8 @@
                                             count = 0;
                                             playAnimation(binding.question,0,list.get(position).getQuestion());
 
+                                            resetTimer();
+
                                         }
                                     });
 
@@ -139,24 +141,36 @@
 
         }
 
-        private void resetTimer() {
+        public void onBackPressed() {
+            // Do nothing or add a message if you want
+            Toast.makeText(QuestionActivity2.this, "Please Complete The Quiz.", Toast.LENGTH_SHORT).show();
+        }
 
-            timer = new CountDownTimer(30000,1000) {
+        private void resetTimer() {
+            if (timer != null) {
+                timer.cancel(); // Cancel the current timer if it exists
+            }
+
+            timer = new CountDownTimer(31000, 1000) {
                 @Override
                 public void onTick(long l) {
-
-                    binding.timer.setText(String.valueOf(l/1000));
-
+                    binding.timer.setText(String.valueOf(l / 1000));
                 }
 
                 @Override
                 public void onFinish() {
+                    // Check if the quiz has ended
+                    if (position < list.size()) {
+                        Toast.makeText(QuestionActivity2.this, "Time Out", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(QuestionActivity2.this, "Time Out", Toast.LENGTH_SHORT).show();
-
+                        // Simulate a click on the "Next" button
+                        binding.btnNext.performClick();
+                    }
                 }
+
             };
 
+            timer.start(); // Start the new timer
         }
 
         private void enableOption(boolean enable) {
@@ -250,6 +264,20 @@
 
             binding.btnNext.setEnabled(true);
             binding.btnNext.setAlpha(1);
+
+            //String selectedAnswer = selectedOption.getText().toString().trim();
+           // String correctAnswer = list.get(position).getCorrectAnsw().trim();
+
+            // if (selectedAnswer.equalsIgnoreCase(correctAnswer)) {
+             //   score++;
+              //  selectedOption.setBackgroundResource(R.drawable.right_answ2);
+          //  } else {
+              //  selectedOption.setBackgroundResource(R.drawable.wrong_answ2);
+
+               // Button correctOption = (Button) binding.optionContainer.findViewWithTag(correctAnswer);
+               // correctOption.setBackgroundResource(R.drawable.right_answ2);
+           // }
+
 
             if (selectedOption.getText().toString().equals(list.get(position).getCorrectAnsw())){
 

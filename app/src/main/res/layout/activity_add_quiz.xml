@@ -30,6 +30,17 @@
       app:layout_constraintTop_toTopOf="@+id/toolbar2" />
 
   <ImageView
+      android:id="@+id/imageAddQuizBack"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginStart="15dp"
+      app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/baseline_keyboard_backspace_24"
+      app:tint="@color/white" />
+
+  <ImageView
       android:id="@+id/addCategory"
       android:layout_width="30dp"
       android:layout_height="30dp"

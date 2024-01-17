@@ -3,7 +3,10 @@ package com.example.myquizapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myquizapplication.Adapters.GrideAdapter;
@@ -32,6 +35,22 @@ public class SetsActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         key = getIntent().getStringExtra("key");
+
+        ImageView setBackArrow = findViewById(R.id.imageSetBack);
+        setBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create an Intent to navigate to another activity (replace YourTargetActivity.class with your target activity)
+                Intent intent = new Intent(SetsActivity.this, AddQuiz.class);
+
+                // Optionally, you can add flags or extras to the intent
+                // intent.putExtra("key", "value");
+
+                // Start the new activity
+                startActivity(intent);
+
+            }
+        });
 
         adapter = new GrideAdapter(getIntent().getIntExtra("sets", 0),
         getIntent().getStringExtra("category"), key, new GrideAdapter.GridListener(){
@@ -62,5 +81,9 @@ public class SetsActivity extends AppCompatActivity {
 
         binding.gridView.setAdapter(adapter);
 
+    }
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
     }
 }

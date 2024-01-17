@@ -64,4 +64,8 @@ public class Teachers extends AppCompatActivity {
         });
 
     }
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
+    }
 }

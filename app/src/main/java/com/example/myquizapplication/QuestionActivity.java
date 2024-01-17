@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myquizapplication.Adapters.QuestionsAdapter;
@@ -22,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class QuestionActivity extends AppCompatActivity {
-
     ActivityQuestionBinding binding;
     FirebaseDatabase database;
     ArrayList<QuestionModel>list;
@@ -45,6 +45,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.recyQuestions.setLayoutManager(layoutManager);
+
 
         adapter = new QuestionsAdapter(this, list, categoryName, new QuestionsAdapter.DeleteListener() {
             @Override
@@ -119,4 +120,5 @@ public class QuestionActivity extends AppCompatActivity {
         });
 
     }
+
 }

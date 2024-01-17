@@ -27,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,6 +67,21 @@ public class AddQuiz extends AppCompatActivity {
 
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.item_add_category_dialog);
+
+        ImageView setBackArrow = findViewById(R.id.imageAddQuizBack);
+        setBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create an Intent to navigate to another activity (replace YourTargetActivity.class with your target activity)
+                Intent intent = new Intent(AddQuiz.this, Teachers.class);
+
+                // Optionally, you can add flags or extras to the intent
+                // intent.putExtra("key", "value");
+
+                // Start the new activity
+                startActivity(intent);
+            }
+        });
 
 
         if (savedInstanceState != null) {
@@ -251,6 +265,10 @@ public class AddQuiz extends AppCompatActivity {
         if (ImageUri != null) {
             outState.putParcelable(STATE_IMAGE_URI, ImageUri);
         }
+    }
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
     }
 
 }

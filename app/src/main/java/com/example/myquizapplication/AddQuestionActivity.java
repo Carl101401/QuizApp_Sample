@@ -3,6 +3,7 @@ package com.example.myquizapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -87,10 +88,16 @@ public class AddQuestionActivity extends AppCompatActivity {
 
                                 if (task.isSuccessful()) {
                                     Toast.makeText(AddQuestionActivity.this, "Question Added", Toast.LENGTH_SHORT).show();
+
+                                    Intent intent = new Intent(AddQuestionActivity.this, QuestionActivity.class);
+                                    intent.putExtra("categoryName", categoryName);
+                                    intent.putExtra("setNum", set);
+                                    startActivity(intent);
                                 } else {
                                     // Display a more detailed error message if the addition fails
                                     Toast.makeText(AddQuestionActivity.this, "Failed to add question: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
+
                             }
                         });
 
@@ -100,4 +107,5 @@ public class AddQuestionActivity extends AppCompatActivity {
         });
 
     }
+
 }

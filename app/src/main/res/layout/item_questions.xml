@@ -25,6 +25,7 @@
             android:layout_gravity="center"
             android:layout_margin="20dp"
             android:text="1. Learned English Subject"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
