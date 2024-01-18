@@ -4,80 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/_3343157_quiz_sign_background_with_space_for_own_text"
+    android:background="@drawable/studentlog"
     tools:context=".LoginPage">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="Quiz App"
-        android:textAlignment="center"
-        android:textSize="50dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        />
     <TextView
         android:id="@+id/usernameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username"
-        android:layout_marginTop="200dp"
         android:layout_marginLeft="50dp"
+        android:layout_marginTop="260dp"
         android:layout_marginRight="50dp"
+        android:text="Username"
+        android:textColor="@color/black"
         android:textSize="30dp"
         android:textStyle="bold"
-        android:textColor="@color/black"
 
         />
+
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/usernameText"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
+        android:backgroundTint="@color/black"
+        android:hint="Enter Your Username Here"
         android:inputType="textPersonName"
-        android:layout_below="@+id/usernameText"
-        />
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
+
     <TextView
         android:id="@+id/passwordText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Password"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:textSize="30dp"
         android:layout_below="@+id/username"
-        android:textStyle="bold"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="50dp"
+        android:text="Password"
         android:textColor="@color/black"
-        />
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/passwordText"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/black"
+        android:hint="Enter Your Password Here"
         android:inputType="textPersonName"
-        android:layout_below="@+id/passwordText"
-        />
+        android:textColorHint="@color/black" />
+
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="login"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
         android:layout_below="@+id/password"
-        android:textSize="30dp"
-        android:textStyle="bold"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/rounded_white"
+        android:text="login"
         android:textColor="@color/black"
-        android:background="?android:attr/selectableItemBackground"
-        />
-
-
-
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

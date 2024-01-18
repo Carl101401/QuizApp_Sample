@@ -1,4 +1,4 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners  android:radius="35dp"/>
-    <solid android:color="@color/toolbarBack"></solid>
+    <corners android:radius="35dp" />
+    <solid android:color="#FFFFFF" />
 </shape>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#d3d3d3"
+    android:background="@drawable/main"
     tools:context=".MainActivity">
 
 
@@ -15,7 +15,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/rounded_white"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="350dp"
         android:backgroundTint="@null"
         android:orientation="vertical">
 
@@ -40,7 +40,7 @@
             android:id="@+id/Student"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="50dp"
+            android:layout_margin="20dp"
             android:background="@drawable/rounded_white"
             android:backgroundTint="@null"
             android:fontFamily="@font/allan"
@@ -53,7 +53,7 @@
             android:id="@+id/Teacher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="50dp"
+            android:layout_margin="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_white"
             android:backgroundTint="@null"
