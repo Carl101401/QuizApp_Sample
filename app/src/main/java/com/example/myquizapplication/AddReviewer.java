@@ -47,6 +47,7 @@ public class AddReviewer extends AppCompatActivity {
 
         }
     });
+    int videoCounter = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,19 +72,25 @@ public class AddReviewer extends AppCompatActivity {
         uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadVideo(video, "English Reviewer");
+                uploadVideo(video);
 
             }
         });
     }
 
-    private void uploadVideo(Uri uri, String customVideoName) {
+    private void uploadVideo(Uri uri) {
+        String customVideoName = "English_Reviewer_" + videoCounter;
+
         StorageReference reference = storageReference.child("video/" + customVideoName);
 
         reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(AddReviewer.this, "Video Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+                videoCounter++;
+
+                video = null;
+                Glide.with(AddReviewer.this).clear(imageView);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
