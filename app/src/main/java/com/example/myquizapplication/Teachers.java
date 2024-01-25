@@ -49,7 +49,7 @@ public class Teachers extends AppCompatActivity {
         btnaddreviewer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AddReviewer.class);
+                Intent intent = new Intent(getApplicationContext(), DifferentAddReviewers.class);
                 startActivity(intent);
             }
 

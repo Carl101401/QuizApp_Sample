@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.FirebaseApp;
@@ -26,76 +25,78 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.UUID;
-
-public class AddReviewer extends AppCompatActivity {
+public class AddImageReviewer extends AppCompatActivity {
     StorageReference storageReference;
     LinearProgressIndicator progressIndicator;
-    Uri video;
-    MaterialButton selectVideo, uploadVideo;
+    Uri image;
+    MaterialButton selectImage, uploadImage;
     ImageView imageView;
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == RESULT_OK){
                 if (result.getData() != null){
-                    uploadVideo.setEnabled(true);
-                    video = result.getData().getData();
-                    Glide.with(AddReviewer.this).load(video).into(imageView);
+                    uploadImage.setEnabled(true);
+                    image = result.getData().getData();
+                    Glide.with(AddImageReviewer.this).load(image).into(imageView);
                 }
-            }else Toast.makeText(AddReviewer.this, "Please Select A Video", Toast.LENGTH_SHORT).show();
-
+            } else {
+                Toast.makeText(AddImageReviewer.this, "Please Select an Image", Toast.LENGTH_SHORT).show();
+            }
         }
     });
-    int videoCounter = 1;
+    int imageCounter = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addreviewer);
+        setContentView(R.layout.activity_addimagereviewer);
 
         FirebaseApp.initializeApp(this);
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        imageView = findViewById(R.id.imageViews);
-        progressIndicator = findViewById(R.id.process);
-        selectVideo = findViewById(R.id.selectVideo);
-        uploadVideo = findViewById(R.id.uploadVideo);
+        imageView = findViewById(R.id.addImageView);
+        progressIndicator = findViewById(R.id.process2);
+        selectImage = findViewById(R.id.selectImage);
+        uploadImage = findViewById(R.id.uploadImage);
 
-        selectVideo.setOnClickListener(new View.OnClickListener() {
+        selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("video/*");
+                intent.setType("image/*");
                 activityResultLauncher.launch(intent);
+                uploadImage.setVisibility(View.VISIBLE);
             }
         });
-        uploadVideo.setOnClickListener(new View.OnClickListener() {
+        uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadVideo(video);
-
+                uploadImage(image);
             }
         });
     }
 
-    private void uploadVideo(Uri uri) {
-        String customVideoName = "English_Reviewer_" + videoCounter;
+    private void uploadImage(Uri uri) {
+        String customImageName = "Quiz_Reviewer_Number_" + imageCounter;
 
-        StorageReference reference = storageReference.child("video/" + customVideoName);
+        StorageReference reference = storageReference.child("images/" + customImageName);
 
         reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(AddReviewer.this, "Video Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-                videoCounter++;
+                Toast.makeText(AddImageReviewer.this, "Image Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+                imageCounter++;
 
-                video = null;
-                Glide.with(AddReviewer.this).clear(imageView);
+                // Reset image and clear ImageView
+                image = null;
+                Glide.with(AddImageReviewer.this).clear(imageView);
+                uploadImage.setVisibility(View.GONE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddReviewer.this, "Failed To Upload Video", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddImageReviewer.this, "Failed To Upload Image", Toast.LENGTH_SHORT).show();
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -106,5 +107,10 @@ public class AddReviewer extends AppCompatActivity {
             }
         });
     }
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
+    }
+
 
 }

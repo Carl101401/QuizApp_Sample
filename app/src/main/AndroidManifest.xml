@@ -12,17 +12,39 @@
         android:theme="@style/Theme.MyQuizApplication"
         tools:targetApi="31">
         <activity
-            android:name=".Reviewer"
+            android:name=".TextReviewer"
             android:exported="false"
-            android:parentActivityName=".QuizReviewer"/>
+            android:parentActivityName=".DifferentReviewers"/>
         <activity
-            android:name=".AddReviewer"
+            android:name=".AddTextReviewer"
+            android:parentActivityName=".DifferentAddReviewers"
+            android:exported="false" />
+        <activity
+            android:name=".DifferentAddReviewers"
+            android:exported="false" />
+        <activity
+            android:name=".DifferentReviewers"
+            android:exported="false" />
+        <activity
+            android:name=".ImageReviewer"
             android:exported="false"
-            android:parentActivityName=".Teachers" />
+            android:parentActivityName=".DifferentReviewers"/>
+        <activity
+            android:name=".AddImageReviewer"
+            android:exported="false"
+            android:parentActivityName=".DifferentAddReviewers" />
+        <activity
+            android:name=".VideoReviewer"
+            android:exported="false"
+            android:parentActivityName=".DifferentReviewers" />
+        <activity
+            android:name=".AddVideoReviewer"
+            android:exported="false"
+            android:parentActivityName=".DifferentAddReviewers" />
         <activity
             android:name=".QuizReviewer"
             android:exported="false"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".QuestionActivity"
             android:exported="false" />
@@ -60,7 +82,7 @@
         <activity
             android:name=".Teachers"
             android:exported="false"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Students"
             android:exported="false"
@@ -68,8 +90,8 @@
         <activity
             android:name=".PlayQuiz"
             android:exported="false"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".NewActivity"
             android:exported="false" />

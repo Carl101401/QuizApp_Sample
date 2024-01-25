@@ -8,14 +8,14 @@
         android:layout_width="80sp"
         android:layout_height="60sp"
         android:layout_centerVertical="true"
-        android:id="@+id/ListItemImage"
+        android:id="@+id/ListItemVideo"
         android:scaleType="centerCrop"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:layout_toEndOf="@id/ListItemImage"
-        android:id="@+id/ListItemTitle"
+        android:layout_toEndOf="@id/ListItemVideo"
+        android:id="@+id/ListVideoTitle"
         android:layout_marginStart="10sp"
         android:maxLines="2"
         />

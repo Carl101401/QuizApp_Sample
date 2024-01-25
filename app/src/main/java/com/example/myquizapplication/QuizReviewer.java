@@ -30,7 +30,7 @@ public class QuizReviewer extends AppCompatActivity {
         btnReviewer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Reviewer.class);
+                Intent intent = new Intent(getApplicationContext(), DifferentReviewers.class);
                 startActivity(intent);
             }
         });
