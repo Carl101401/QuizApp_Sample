@@ -44,11 +44,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ModelViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyAdapter.ModelViewHolder holder, @SuppressLint("RecyclerView") int position) {
         final Model model = modelArrayList.get(position);
-        holder.usern.setText(model.getUser());
-        holder.passw.setText(model.getPass());
-        holder.firstn.setText(model.getFname());
-        holder.lastn.setText(model.getLname());
-        holder.ssection.setText(model.getYsection());
+        holder.usern.setText("Username: "+ model.getUser());
+        holder.passw.setText("Password: "+model.getPass());
+        holder.firstn.setText("Firstname: "+model.getFname());
+        holder.lastn.setText("Lastname: "+model.getLname());
+        holder.ssection.setText("Year & Section: "+model.getYsection());
+
+
 
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
