@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4FF81"
+    android:background="@drawable/five"
     tools:context=".AddImageReviewer">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -22,23 +22,23 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/selectImage"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/addImageView"
-    android:layout_centerHorizontal="true"
-    android:layout_marginStart="10sp"
-    android:layout_marginTop="30sp"
-    android:layout_marginEnd="10sp"
-    android:layout_marginBottom="10sp"
-    android:text="Select Image" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="30sp"
+        android:layout_marginEnd="10sp"
+        android:layout_marginBottom="10sp"
+        android:text="Select Image" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/uploadImage"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/selectImage"
-    android:layout_centerHorizontal="true"
-    android:enabled="false"
-    android:text="Upload Image" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/selectImage"
+        android:layout_centerHorizontal="true"
+        android:enabled="false"
+        android:text="Upload Image" />
 
 </RelativeLayout>

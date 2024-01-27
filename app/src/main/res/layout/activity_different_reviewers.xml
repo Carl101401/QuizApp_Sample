@@ -3,41 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4FF81"
+    android:background="@drawable/eight"
     tools:context=".DifferentReviewers">
 
     <Button
         android:id="@+id/btnVideoReviewer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Video Reviewer"
-        android:textColor="#000000"
-        android:background="#7F7F00"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:padding="16dp"/>
+        android:background="#7F7F00"
+        android:padding="16dp"
+        android:text="Video Reviewer"
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/btnImageReviewer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Image Reviewer"
-        android:textColor="#000000"
-        android:background="#7F7F00"
         android:layout_below="@id/btnVideoReviewer"
-        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:padding="16dp"/>
+        android:layout_marginTop="20dp"
+        android:background="#7F7F00"
+        android:padding="16dp"
+        android:text="Image Reviewer"
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/btnTextReviewer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Text Reviewer"
-        android:textColor="#000000"
-        android:background="#7F7F00"
         android:layout_below="@id/btnImageReviewer"
-        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:padding="16dp"/>
+        android:layout_marginTop="20dp"
+        android:background="#7F7F00"
+        android:padding="16dp"
+        android:text="Text Reviewer"
+        android:textColor="#000000" />
 </RelativeLayout>

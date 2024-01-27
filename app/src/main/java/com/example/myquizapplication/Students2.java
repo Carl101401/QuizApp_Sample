@@ -2,9 +2,12 @@ package com.example.myquizapplication;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,6 +54,21 @@ public class Students2 extends AppCompatActivity {
             loadingDialog.setCancelable(false);
         }
         loadingDialog.show();
+        ImageView setBackArrow = findViewById(R.id.imageCategorySetBack);
+        setBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create an Intent to navigate to another activity (replace YourTargetActivity.class with your target activity)
+                Intent intent = new Intent(Students2.this, QuizReviewer.class);
+
+                // Optionally, you can add flags or extras to the intent
+                // intent.putExtra("key", "value");
+
+                // Start the new activity
+                startActivity(intent);
+
+            }
+        });
 
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
@@ -101,5 +119,9 @@ public class Students2 extends AppCompatActivity {
             }
         });
 
+    }
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
     }
 }

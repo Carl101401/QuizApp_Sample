@@ -11,7 +11,7 @@ import android.widget.ImageView;
 public class QuizReviewer extends AppCompatActivity {
 
     ImageView quizLogo;
-    Button btnQuiz, btnReviewer;
+    Button btnQuiz, btnReviewer, btnQuit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,7 @@ public class QuizReviewer extends AppCompatActivity {
 
         btnQuiz = (Button) findViewById(R.id.Chapter);
         btnReviewer = (Button) findViewById(R.id.Review);
+        btnQuit = (Button) findViewById(R.id.Quit);
 
         btnQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,9 +35,17 @@ public class QuizReviewer extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btnQuit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),StudentLogin.class);
+                startActivity(intent);
+            }
+        });
     }
-
-
-
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
+    }
 
 }

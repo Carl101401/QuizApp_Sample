@@ -21,11 +21,10 @@
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="75dp"
         android:layout_marginTop="75dp"
-        />
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="50dp"
+        android:padding="5dp" />
 
 </RelativeLayout>

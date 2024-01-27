@@ -7,18 +7,18 @@
     android:background="#FFFFFF"
     tools:context=".TextReviewer">
 
-<androidx.recyclerview.widget.RecyclerView
-    android:background="#F4FF81"
-    android:id="@+id/textRecycler"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentTop="true"
-    android:layout_marginTop="50dp"
-    android:layout_marginBottom="10dp"
-    android:clipToPadding="false"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/textRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/nine"
+        android:clipToPadding="false"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 <TextView
     android:id="@+id/textViewTextTitle"

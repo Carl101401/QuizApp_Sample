@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4FF81"
+    android:background="@drawable/one"
     tools:context=".SetsActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -50,8 +50,8 @@
         android:columnWidth="150dp"
         android:gravity="center"
         android:horizontalSpacing="15dp"
-        android:verticalSpacing="15dp"
         android:numColumns="auto_fit"
+        android:verticalSpacing="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -66,16 +66,19 @@
             android:exported="false" />
         <activity
             android:name=".SetsActivity2"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Students2"/>
         <activity
             android:name=".QuestionActivity2"
             android:exported="false" />
         <activity
             android:name=".StudentLogin"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".Students2"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".QuizReviewer"/>
         <activity
             android:name=".LoginPage"
             android:exported="false" />

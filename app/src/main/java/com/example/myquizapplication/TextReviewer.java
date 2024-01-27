@@ -101,7 +101,6 @@ public class TextReviewer extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Do nothing or add a message if you want
-        // Toast.makeText(TextReviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
-        super.onBackPressed();
+        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
     }
 }
