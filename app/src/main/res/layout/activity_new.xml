@@ -4,17 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/studentsloglong"
+    android:background="@drawable/studentslog"
     tools:context=".NewActivity">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:text="Create Account"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="153dp"
+        android:layout_marginEnd="50dp"
+        android:fontFamily="@font/playball"
+        android:text="ACCOUNT"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="45sp"
+        android:textSize="35dp"
         android:textStyle="bold" />
 
     <TextView
@@ -22,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="230dp"
         android:layout_marginRight="50dp"
         android:text="Username"
         android:textColor="@color/black"
@@ -39,8 +44,8 @@
         android:backgroundTint="@color/black"
         android:hint="Enter Your Username"
         android:inputType="textPersonName"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
 
     <TextView
         android:id="@+id/CreatePasswordText"
@@ -65,8 +70,8 @@
         android:backgroundTint="@color/black"
         android:hint="Enter Your Password"
         android:inputType="textPersonName"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
 
     <TextView
         android:id="@+id/RetypePasswordText"
@@ -90,9 +95,9 @@
         android:layout_marginRight="50dp"
         android:backgroundTint="@color/black"
         android:hint="Retype Your Password"
-        android:textColorHint="@color/black"
         android:inputType="textPersonName"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
 
     <Button
         android:id="@+id/RegisterLogin"
@@ -107,5 +112,17 @@
         android:textColor="@color/black"
         android:textSize="24dp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="100dp"
+        app:srcCompat="@drawable/create" />
 
 </RelativeLayout>

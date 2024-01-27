@@ -30,6 +30,8 @@
         private int position = 0;
         private int score = 0;
         CountDownTimer timer;
+        private TextView numIndicator;
+
 
         FirebaseDatabase database;
         String categoryName;
@@ -50,6 +52,8 @@
             set = getIntent().getIntExtra("setNum", 1);
             list = new ArrayList<>();
 
+            numIndicator = findViewById(R.id.numIndicator);
+
             resetTimer();
             timer.start();
 
@@ -59,76 +63,91 @@
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
                             list.clear();
-                            if (snapshot.exists()){
 
-                                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-
+                            if (snapshot.exists()) {
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                     QuestionModel2 model = dataSnapshot.getValue(QuestionModel2.class);
                                     list.add(model);
-
                                 }
-                                if (list.size()>0){
 
-                                    for (int i=0; i<4; i++){
+                                if (list.size() > 0) {
+                                    int numberOfOptions = getNumberOfOptions(list.get(position));
 
-                                        binding.optionContainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
+                                    for (int i = 0; i < 4; i++) {
+                                        Button optionButton = (Button) binding.optionContainer.getChildAt(i);
 
-                                                checkAnsw((Button)view);
+                                        if (i < numberOfOptions) {
+                                            optionButton.setVisibility(View.VISIBLE);
 
+                                            String optionText = "";
+                                            switch (i) {
+                                                case 0:
+                                                    optionText = list.get(position).getOptionA();
+                                                    break;
+                                                case 1:
+                                                    optionText = list.get(position).getOptionB();
+                                                    break;
+                                                case 2:
+                                                    optionText = list.get(position).getOptionC();
+                                                    break;
+                                                case 3:
+                                                    optionText = list.get(position).getOptionD();
+                                                    break;
                                             }
-                                        });
+
+                                            if (!optionText.isEmpty()) {
+                                                // Set the actual option text
+                                                optionButton.setText(optionText);
+                                                optionButton.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        checkAnsw((Button) view);
+                                                    }
+                                                });
+                                            } else {
+                                                // Hide the button if there is no data
+                                                optionButton.setVisibility(View.GONE);
+                                            }
+                                        } else {
+                                            optionButton.setVisibility(View.GONE);
+                                        }
                                     }
-
-                                    playAnimation(binding.question,0,list.get(position).getQuestion());
-
 
                                     binding.btnNext.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-
                                             binding.btnNext.setEnabled(false);
                                             binding.btnNext.setAlpha(0.3f);
 
                                             enableOption(true);
-                                            position ++;
+                                            position++;
 
-                                            if (position==list.size()){
-
-                                                Intent intent = new Intent(QuestionActivity2.this,ScoreActivity.class);
-                                                intent.putExtra("correctAnsw",score);
-                                                intent.putExtra("totalQuestion",list.size());
+                                            if (position == list.size()) {
+                                                Intent intent = new Intent(QuestionActivity2.this, ScoreActivity.class);
+                                                intent.putExtra("correctAnsw", score);
+                                                intent.putExtra("totalQuestion", list.size());
                                                 startActivity(intent);
                                                 finish();
-
                                                 return;
                                             }
 
                                             count = 0;
-                                            playAnimation(binding.question,0,list.get(position).getQuestion());
-
+                                            playAnimation(binding.question, 0, list.get(position).getQuestion());
                                             resetTimer();
-
+                                            updateQuestionIndicator();
                                         }
                                     });
 
-                                }
-                                else {
-
+                                    // Play the animation for the first question
+                                    playAnimation(binding.question, 0, list.get(position).getQuestion());
+                                    updateQuestionIndicator();
+                                } else {
                                     Toast.makeText(QuestionActivity2.this, "Question Not Exist", Toast.LENGTH_SHORT).show();
-
                                 }
-
-                            }
-
-                            else {
+                            } else {
                                 Toast.makeText(QuestionActivity2.this, "Question Not Exist", Toast.LENGTH_SHORT).show();
                             }
-
                         }
 
                         @Override
@@ -139,7 +158,37 @@
 
 
 
+
+
         }
+
+        private void updateQuestionIndicator() {
+            if (numIndicator != null) {
+                numIndicator.setText((position + 1) + "/" + list.size());
+            }
+        }
+
+
+        private int getNumberOfOptions(QuestionModel2 question) {
+            int count = 0;
+
+            // Check if each option is not empty and count them
+            if (!question.getOptionA().isEmpty()) {
+                count++;
+            }
+            if (!question.getOptionB().isEmpty()) {
+                count++;
+            }
+            if (!question.getOptionC().isEmpty()) {
+                count++;
+            }
+            if (!question.getOptionD().isEmpty()) {
+                count++;
+            }
+
+            return count;
+        }
+
 
         public void onBackPressed() {
             // Do nothing or add a message if you want
@@ -190,72 +239,72 @@
         }
 
         private void playAnimation(View view, int value, String data) {
-           // Log.d("FirebaseData", "Option " + count + ": " + data);
-
             view.animate().alpha(value).scaleX(value).scaleY(value).setDuration(500).setStartDelay(100)
                     .setInterpolator(new DecelerateInterpolator()).setListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(@NonNull Animator animator) {
-
-                            if (value==0 &&count<4){
-
+                            if (value == 0 && count < 4) {
                                 String option = "";
-
-                                if (count==0){
+                                if (count == 0) {
                                     option = list.get(position).getOptionA();
-                                }
-                                else if (count==1) {
+                                } else if (count == 1) {
                                     option = list.get(position).getOptionB();
-                                }
-                                else if (count==2) {
+                                } else if (count == 2) {
                                     option = list.get(position).getOptionC();
-                                }
-                                else if (count==3) {
+                                } else if (count == 3) {
                                     option = list.get(position).getOptionD();
                                 }
-                                playAnimation(binding.optionContainer.getChildAt(count),0,option);
+
+                                playAnimation(binding.optionContainer.getChildAt(count), 0, option);
                                 count++;
                             }
-
                         }
 
                         @Override
                         public void onAnimationEnd(@NonNull Animator animator) {
-
-                            if (value==0){
-
+                            if (value == 0) {
                                 try {
+                                    if (view instanceof Button) {
+                                        Button optionButton = (Button) view;
+                                        if (data.isEmpty()) {
+                                            optionButton.setVisibility(View.GONE); // Use GONE instead of INVISIBLE
+                                        } else {
+                                            optionButton.setVisibility(View.VISIBLE);
+                                            optionButton.setText(data);
+                                            optionButton.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    checkAnsw((Button) view);
+                                                }
+                                            });
+                                        }
+                                    } else if (view instanceof TextView) {
+                                        TextView questionText = (TextView) view;
+                                        if (data.isEmpty()) {
+                                            questionText.setVisibility(View.GONE); // Use GONE instead of INVISIBLE
+                                        } else {
+                                            questionText.setVisibility(View.VISIBLE);
+                                            questionText.setText(data);
+                                        }
+                                    }
 
-                                    ((TextView)view).setText(data);
-                                    binding.numIndicator.setText(position+1+"/"+list.size());
-
-                                }
-                                catch (Exception e){
-
-                                    ((Button)view).setText(data);
-
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
 
                                 view.setTag(data);
-                                playAnimation(view,1,data);
-
-
+                                playAnimation(view, 1, data);
                             }
-
-
                         }
 
                         @Override
                         public void onAnimationCancel(@NonNull Animator animator) {
-
                         }
 
                         @Override
                         public void onAnimationRepeat(@NonNull Animator animator) {
-
                         }
                     });
-
         }
 
         private void checkAnsw(Button selectedOption) {

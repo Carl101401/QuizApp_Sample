@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#998C9EFF"
+    android:background="#F4FF81"
     tools:context=".AddQuestionActivity">
 
     <EditText
@@ -14,10 +14,12 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="15dp"
+        android:backgroundTint="@color/black"
         android:ems="10"
         android:hint="Enter Your Question"
         android:inputType="textPersonName"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Correct\nAnswer"
+        android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/inputQuestion"
         app:layout_constraintTop_toBottomOf="@+id/inputQuestion" />
@@ -54,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="A)" />
+                android:text="A)"
+                android:textColor="@color/black" />
 
             <RadioButton
                 android:id="@+id/radioButton2"
@@ -62,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="B)" />
+                android:text="B)"
+                android:textColor="@color/black" />
 
             <RadioButton
                 android:id="@+id/radioButton3"
@@ -70,7 +75,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="C)" />
+                android:text="C)"
+                android:textColor="@color/black" />
 
             <RadioButton
                 android:id="@+id/radioButton4"
@@ -78,7 +84,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="D)" />
+                android:text="D)"
+                android:textColor="@color/black" />
         </RadioGroup>
 
         <LinearLayout
@@ -93,32 +100,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:backgroundTint="@color/black"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:padding="8dp"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:backgroundTint="@color/black"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:backgroundTint="@color/black"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:backgroundTint="@color/black"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@color/black" />
         </LinearLayout>
 
     </LinearLayout>

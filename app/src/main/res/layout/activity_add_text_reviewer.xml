@@ -19,6 +19,7 @@
         android:layout_height="300sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40sp"
+        android:backgroundTint="@color/black"
         android:hint="Enter Text Here"
         android:textColor="@color/black"
         android:textColorHint="@color/black" />

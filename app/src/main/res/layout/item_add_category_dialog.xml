@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#3F51B5"
+        app:cardBackgroundColor="#F4FF81"
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
                 android:ems="10"
                 android:hint="Enter Category Name"
                 android:inputType="textPersonName"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
