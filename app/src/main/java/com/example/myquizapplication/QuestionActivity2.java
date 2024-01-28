@@ -2,6 +2,7 @@
 
     import android.animation.Animator;
     import android.content.Intent;
+    import android.media.MediaPlayer;
     import android.os.Bundle;
     import android.os.CountDownTimer;
 
@@ -37,6 +38,9 @@
         String categoryName;
 
         private int set;
+        private MediaPlayer correctSound;
+        private MediaPlayer wrongSound;
+
 
 
         @Override
@@ -53,6 +57,9 @@
             list = new ArrayList<>();
 
             numIndicator = findViewById(R.id.numIndicator);
+            correctSound = MediaPlayer.create(this, R.raw.correct);
+            wrongSound = MediaPlayer.create(this, R.raw.wrong);
+
 
             resetTimer();
             timer.start();
@@ -332,6 +339,7 @@
 
                 score ++;
                 selectedOption.setBackgroundResource(R.drawable.right_answ2);
+                playSound(correctSound);
 
             }
             else {
@@ -340,9 +348,28 @@
 
                 Button correctOption = (Button) binding.optionContainer.findViewWithTag(list.get(position).getCorrectAnsw());
                 correctOption.setBackgroundResource(R.drawable.right_answ2);
+                playSound(wrongSound);
 
             }
 
+        }
+
+        private void playSound(MediaPlayer mediaPlayer) {
+            if (mediaPlayer != null) {
+                mediaPlayer.start();
+            }
+        }
+        @Override
+        protected void onDestroy() {
+            super.onDestroy();
+
+            // Release MediaPlayer resources
+            if (correctSound != null) {
+                correctSound.release();
+            }
+            if (wrongSound != null) {
+                wrongSound.release();
+            }
         }
 
 

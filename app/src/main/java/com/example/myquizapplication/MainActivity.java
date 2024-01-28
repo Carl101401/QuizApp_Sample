@@ -3,6 +3,7 @@ package com.example.myquizapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     Button btnStudent, btnTeacher;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
         btnStudent = (Button) findViewById(R.id.Student);
         btnTeacher = (Button) findViewById(R.id.Teacher);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.welcome);
+        mediaPlayer.start();
 
 
 
@@ -40,4 +45,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
 }
