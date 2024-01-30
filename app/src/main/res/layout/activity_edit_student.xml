@@ -1,0 +1,90 @@
+<!-- activity_edit.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/six"
+    tools:context=".EditStudent">
+
+    <EditText
+        android:id="@+id/editUsernameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:hint="Username"
+        android:textColorHint="#000000"
+        android:textColor="#000000"
+        android:backgroundTint="#000000" />
+
+    <EditText
+        android:id="@+id/editPasswordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editUsernameEditText"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColorHint="#000000"
+        android:textColor="#000000"
+        android:backgroundTint="#000000" />
+
+    <CheckBox
+        android:id="@+id/showPasswordCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editPasswordEditText"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:text="Show Password"
+        android:textColor="#000000" />
+
+    <EditText
+        android:id="@+id/editFirstnameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/showPasswordCheckBox"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:hint="First Name"
+        android:textColorHint="#000000"
+        android:textColor="#000000"
+        android:backgroundTint="#000000" />
+
+    <EditText
+        android:id="@+id/editLastnameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editFirstnameEditText"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:hint="Last Name"
+        android:textColorHint="#000000"
+        android:textColor="#000000"
+        android:backgroundTint="#000000" />
+
+    <EditText
+        android:id="@+id/editYearSectionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editLastnameEditText"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:hint="Year | Section"
+        android:textColorHint="#000000"
+        android:textColor="#000000"
+        android:backgroundTint="#000000" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editYearSectionEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_white"
+        android:text="Save"
+        android:textColor="#000000" />
+</RelativeLayout>
