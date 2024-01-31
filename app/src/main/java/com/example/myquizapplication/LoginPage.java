@@ -3,6 +3,7 @@ package com.example.myquizapplication;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,9 @@ public class LoginPage extends AppCompatActivity {
         btnLogin = findViewById(R.id.buttonLogin);
         btnCreateAccount = findViewById(R.id.buttonCreateAccount);
         db = FirebaseFirestore.getInstance();
+
+        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
