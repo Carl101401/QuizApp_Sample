@@ -1,6 +1,9 @@
 package com.example.myquizapplication;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -18,9 +21,9 @@ import java.util.List;
 public class TextReviewer extends AppCompatActivity {
 
     private RecyclerView textRecycler;
+    private TextViewAdapter textAdapter; // Updated to use TextViewAdapter
     private TextView textViewTextTitle;
     private List<String> textList;
-    private TextAdapter textAdapter;
     private DatabaseReference databaseReference;
 
     @Override
@@ -32,7 +35,7 @@ public class TextReviewer extends AppCompatActivity {
         textViewTextTitle = findViewById(R.id.textViewTextTitle);
 
         textList = new ArrayList<>();
-        textAdapter = new TextAdapter(this, textList);
+        textAdapter = new TextViewAdapter(this, textList); // Updated to use TextViewAdapter
         textRecycler.setLayoutManager(new LinearLayoutManager(this));
         textRecycler.setAdapter(textAdapter);
 
@@ -65,42 +68,52 @@ public class TextReviewer extends AppCompatActivity {
             }
         });
 
-        // Set item click listener for delete functionality
-        textAdapter.setOnItemClickListener(new TextAdapter.OnItemClickListener() {
+        // Set item click listener for TextViewAdapter
+        textAdapter.setOnItemClickListener(new TextViewAdapter.OnItemClickListener() {
             @Override
-            public void onDeleteClick(int position) {
-                deleteText(position);
+            public void onClick(int position) {
+                viewTextDialog(position);
             }
         });
     }
 
-    private void deleteText(int position) {
-        // Get the selected text from the list
-        String textToDelete = textList.get(position);
+    private void viewTextDialog(int position) {
+        // Ensure the position is within bounds
+        if (position >= 0 && position < textList.size()) {
+            // Get the text corresponding to the clicked position
+            String text = textList.get(position);
 
-        // Remove the item from the RecyclerView
-        textAdapter.deleteItem(position);
+            // Create a dialog to display the text content
+            Dialog dialog = new Dialog(TextReviewer.this, R.style.TransparentDialog);
+            dialog.setContentView(R.layout.dialog_view_text);
 
-        // Remove the item from Firebase Database
-        databaseReference.orderByValue().equalTo(textToDelete).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    snapshot.getRef().removeValue();
+            TextView dialogTextContent = dialog.findViewById(R.id.dialogTextContent);
+            Button dialogCloseButton = dialog.findViewById(R.id.dialogCloseButton);
+
+            // Set the text content in the dialog
+            dialogTextContent.setText(text);
+
+            // Set a click listener for the close button
+            dialogCloseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
                 }
-            }
+            });
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; // R.style.DialogAnimation should be defined in your styles.xml
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle errors here
-                Toast.makeText(TextReviewer.this, "Failed to delete data", Toast.LENGTH_SHORT).show();
-            }
-        });
+            // Show the dialog
+            dialog.show();
+        } else {
+            // Handle an invalid position (out of bounds)
+            Toast.makeText(TextReviewer.this, "Invalid position", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     @Override
     public void onBackPressed() {
         // Do nothing or add a message if you want
-        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
     }
 }

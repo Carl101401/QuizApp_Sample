@@ -16,9 +16,14 @@ public class TextAdapter extends RecyclerView.Adapter<TextAdapter.TextViewHolder
     private final Context context;
     private final List<String> textList;
     private OnItemClickListener mListener;
+    private static OnItemClickListener vlistener;
+
+
 
     public interface OnItemClickListener {
         void onDeleteClick(int position);
+
+        void onClick(int position);
     }
 
     public TextAdapter(Context context, List<String> textList) {
@@ -33,6 +38,7 @@ public class TextAdapter extends RecyclerView.Adapter<TextAdapter.TextViewHolder
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
+        vlistener = listener;
     }
 
     @NonNull
@@ -87,6 +93,15 @@ public class TextAdapter extends RecyclerView.Adapter<TextAdapter.TextViewHolder
         public TextViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewText = itemView.findViewById(R.id.textViewTextItem);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && vlistener != null) {
+                        vlistener.onDeleteClick(position);
+                    }
+                }
+            });
         }
     }
 }

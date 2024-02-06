@@ -30,6 +30,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "Joy in Learning English Textbook.apk"
+        }
+    }
 }
 
 dependencies {
@@ -48,6 +53,9 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
+    implementation 'com.google.code.gson:gson:2.8.8'
+
+
 
 
 }

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -26,12 +27,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 public class AddVideoReviewer extends AppCompatActivity {
+
+
     StorageReference storageReference;
     LinearProgressIndicator progressIndicator;
     Uri video;
     MaterialButton selectVideo, uploadVideo;
     ImageView imageView;
+
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+
+
         @Override
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == RESULT_OK){
@@ -44,7 +50,6 @@ public class AddVideoReviewer extends AppCompatActivity {
 
         }
     });
-    int videoCounter = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,21 @@ public class AddVideoReviewer extends AppCompatActivity {
         progressIndicator = findViewById(R.id.process);
         selectVideo = findViewById(R.id.selectVideo);
         uploadVideo = findViewById(R.id.uploadVideo);
+
+        com.google.android.material.button.MaterialButton viewTextButton = findViewById(R.id.ViewVideoButton);
+        viewTextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Define the Intent to start a new activity (replace NewActivity.class with your desired activity)
+                Intent intent = new Intent(AddVideoReviewer.this, TeacherVideoReviewer.class);
+
+                // Add any extras or data you want to pass to the new activity
+                // intent.putExtra("key", "value");
+
+                // Start the new activity
+                startActivity(intent);
+            }
+        });
 
         selectVideo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,15 +97,27 @@ public class AddVideoReviewer extends AppCompatActivity {
     }
 
     private void uploadVideo(Uri uri) {
-        String customVideoName = "Quiz_Reviewer_Number_" + videoCounter;
+        // Retrieve the current videoCounter value from SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("VideoCounterPrefs", MODE_PRIVATE);
+        final int[] videoCounter = {preferences.getInt("videoCounter", 1)}; // Default value is 1
 
-        StorageReference reference = storageReference.child("video/" + customVideoName);
+
+        final String[] customVideoName = {"Quiz_Reviewer_Number_" + videoCounter[0]};
+
+        StorageReference reference = storageReference.child("video/" + customVideoName[0]);
 
         reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(AddVideoReviewer.this, "Video Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-                videoCounter++;
+
+                // Increment videoCounter
+                videoCounter[0]++;
+
+                // Save the updated videoCounter value to SharedPreferences
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("videoCounter", videoCounter[0]);
+                editor.apply();
 
                 video = null;
                 Glide.with(AddVideoReviewer.this).clear(imageView);
@@ -105,6 +137,7 @@ public class AddVideoReviewer extends AppCompatActivity {
             }
         });
     }
+
     public void onBackPressed() {
         // Do nothing or add a message if you want
         //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();

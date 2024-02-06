@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnStudent, btnTeacher;
     private MediaPlayer mediaPlayer;
-    private boolean welcomeSoundPlayed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +27,11 @@ public class MainActivity extends AppCompatActivity {
         btnTeacher = (Button) findViewById(R.id.Teacher);
 
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        welcomeSoundPlayed = preferences.getBoolean("welcomeSoundPlayed", false);
 
         mediaPlayer = MediaPlayer.create(this, R.raw.welcome);
+        mediaPlayer.start();
 
-        if (!welcomeSoundPlayed) {
-            mediaPlayer.start();
-            welcomeSoundPlayed = true; // Set the flag to true after playing the sound
-            preferences.edit().putBoolean("welcomeSoundPlayed", true).apply();
-        }
+
 
         btnStudent.setOnClickListener(new View.OnClickListener() {
             @Override

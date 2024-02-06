@@ -1,6 +1,7 @@
 package com.example.myquizapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -9,13 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.FirebaseApp;  // Import this
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginPage extends AppCompatActivity {
 
     EditText username, password;
     Button btnLogin, btnCreateAccount;
+    FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
 
     @Override
@@ -23,7 +26,6 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
 
-        // Initialize Firebase
         FirebaseApp.initializeApp(this);
 
         username = findViewById(R.id.username);
@@ -31,9 +33,9 @@ public class LoginPage extends AppCompatActivity {
         btnLogin = findViewById(R.id.buttonLogin);
         btnCreateAccount = findViewById(R.id.buttonCreateAccount);
         db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +46,6 @@ public class LoginPage extends AppCompatActivity {
                 if (user.equals("") || pass.equals("")) {
                     Toast.makeText(LoginPage.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Check the username and password in the "users" collection
                     checkUserCredentials(user, pass);
                 }
             }
@@ -60,26 +61,44 @@ public class LoginPage extends AppCompatActivity {
     }
 
     private void checkUserCredentials(String user, String pass) {
-        db.collection("users")
-                .whereEqualTo("username", user)
-                .whereEqualTo("password", pass)
+        String customEmail = user + "@yourdomain.com";
+
+        firebaseAuth.signInWithEmailAndPassword(customEmail, pass)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Check if the authenticated user exists in the "Users" collection
+                        checkIfUserExistsInUsersCollection(user);
+                    } else {
+                        Toast.makeText(LoginPage.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void checkIfUserExistsInUsersCollection(String username) {
+        FirebaseFirestore.getInstance().collection("users")
+                .document(username)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        if (!task.getResult().isEmpty()) {
-                            // Authentication successful
+                        if (task.getResult().exists()) {
+                            // User exists in the "Users" collection
                             Toast.makeText(LoginPage.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), Teachers.class);
                             startActivity(intent);
                             finish(); // Close the current activity to prevent going back to login
                         } else {
-                            // Invalid Credentials
+                            // User doesn't exist in the "Users" collection
                             Toast.makeText(LoginPage.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                            // You might want to sign out the user or handle this case accordingly
                         }
                     } else {
-                        // Handle task failure
-                        Toast.makeText(LoginPage.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginPage.this, "Error checking user in Firestore", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+    @Override
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        // Toast.makeText(Students.this, "Choose back", Toast.LENGTH_SHORT).show();
     }
 }

@@ -2,6 +2,7 @@ package com.example.myquizapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,6 +39,20 @@ public class AddTextReviewer extends AppCompatActivity {
         // Set the button visible by default
         uploadText.setVisibility(View.VISIBLE);
 
+        com.google.android.material.button.MaterialButton viewTextButton = findViewById(R.id.ViewTextButton);
+        viewTextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Define the Intent to start a new activity (replace NewActivity.class with your desired activity)
+                Intent intent = new Intent(AddTextReviewer.this, TeacherTextReviewer.class);
+
+                // Add any extras or data you want to pass to the new activity
+                // intent.putExtra("key", "value");
+
+                // Start the new activity
+                startActivity(intent);
+            }
+        });
         textInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
@@ -89,4 +104,5 @@ public class AddTextReviewer extends AppCompatActivity {
         // Do nothing or add a message if you want
         //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
     }
+
 }

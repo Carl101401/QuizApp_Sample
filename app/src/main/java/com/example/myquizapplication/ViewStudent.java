@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -25,6 +28,8 @@ public class ViewStudent extends AppCompatActivity {
 
     private static final String TAG = "ViewStudent";
     private FirebaseFirestore firestore;
+    private FirebaseAuth firebaseAuth;
+
     private RecyclerView recyclerView;
     private static final int EDIT_STUDENT_REQUEST_CODE = 1;
 
@@ -33,7 +38,19 @@ public class ViewStudent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_student);
 
+        // Initialize Firebase Authentication and Firestore
+        firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+
+        // Check if the user is authenticated
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser == null) {
+            // If not authenticated, redirect to the login screen
+            startActivity(new Intent(ViewStudent.this, Teachers.class));
+            finish(); // Close the current activity
+            return;
+        }
+
         recyclerView = findViewById(R.id.recyclerView);
 
         // Set up RecyclerView
@@ -69,8 +86,6 @@ public class ViewStudent extends AppCompatActivity {
                             studentList.add(student);
                         }
 
-
-
                         // Display the data in a RecyclerView
                         StudentAdapter adapter = new StudentAdapter(studentList, new StudentAdapter.OnItemClickListener() {
                             @Override
@@ -103,26 +118,61 @@ public class ViewStudent extends AppCompatActivity {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
         // Get the reference to the document you want to delete
-        DocumentReference studentRef = firestore.collection("Students").document(student.getDocumentId());
+        DocumentReference studentRef = firestore.collection("Students").document(student.getUsername());
 
         // Perform the delete operation
         studentRef.delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Refresh the data after deletion
-                        retrieveData();
-                        Toast.makeText(ViewStudent.this, "Student deleted successfully", Toast.LENGTH_SHORT).show();
+                        // Delete the corresponding authentication account
+                        firebaseAuth.signInWithEmailAndPassword(student.getUsername() + "@yourdomain.com", student.getPassword())
+                                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                    @Override
+                                    public void onSuccess(AuthResult authResult) {
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        if (user != null) {
+                                            user.delete()
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            // Data and authentication account deleted successfully
+                                                            Toast.makeText(ViewStudent.this, "Student Data is Deleted ", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(ViewStudent.this, "Add Student to Proceed View Student Again ", Toast.LENGTH_SHORT).show();
+                                                            // Refresh the student data after deletion
+                                                            retrieveData();
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.e(TAG, "Error deleting authentication account", e);
+                                                            Toast.makeText(ViewStudent.this, "Error deleting authentication account", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e(TAG, "Error signing in to delete authentication account", e);
+                                        Toast.makeText(ViewStudent.this, "Error signing in to delete authentication account", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Error deleting student", e);
-                        Toast.makeText(ViewStudent.this, "Error deleting student", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Error deleting student data", e);
+                        Toast.makeText(ViewStudent.this, "Error deleting student data", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+
+
 
     private void launchEditActivity(Student student) {
         // Intent to launch the EditActivity with the selected student details
@@ -140,6 +190,7 @@ public class ViewStudent extends AppCompatActivity {
 
         startActivityForResult(intent, EDIT_STUDENT_REQUEST_CODE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -150,5 +201,4 @@ public class ViewStudent extends AppCompatActivity {
             retrieveData();
         }
     }
-
 }

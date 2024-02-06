@@ -33,7 +33,7 @@ public class Teachers extends AppCompatActivity {
         btnscore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),NewActivity.class);
+                Intent intent = new Intent(getApplicationContext(),Scoreboard.class);
                 startActivity(intent);
             }
 
@@ -57,7 +57,7 @@ public class Teachers extends AppCompatActivity {
         btnsignout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),LoginPage.class);
                 startActivity(intent);
             }
 

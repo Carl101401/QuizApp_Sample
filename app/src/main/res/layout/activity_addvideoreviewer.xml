@@ -42,5 +42,17 @@
         android:enabled="false"
         android:text="Upload Video" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ViewVideoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/uploadVideo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20sp"
+        android:background="@drawable/toolbarbackcolor_rounded"
+        android:text="View Image Reviewer"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/toolbarBack" />
+
 
 </RelativeLayout>

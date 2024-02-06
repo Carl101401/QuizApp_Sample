@@ -12,6 +12,21 @@
         android:theme="@style/Theme.MyQuizApplication"
         tools:targetApi="31">
         <activity
+            android:name=".TeacherVideoReviewer"
+            android:exported="false"
+            android:parentActivityName=".AddVideoReviewer"/>
+        <activity
+            android:name=".TeacherImageReviewer"
+            android:exported="false"
+            android:parentActivityName=".AddImageReviewer" />
+        <activity
+            android:name=".TeacherTextReviewer"
+            android:exported="false"
+            android:parentActivityName=".AddTextReviewer" />
+        <activity
+            android:name=".Scoreboard"
+            android:exported="false" />
+        <activity
             android:name=".EditStudent"
             android:exported="false" />
         <activity
@@ -84,7 +99,8 @@
             android:parentActivityName=".QuizReviewer" />
         <activity
             android:name=".LoginPage"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Teachers"
             android:exported="false"

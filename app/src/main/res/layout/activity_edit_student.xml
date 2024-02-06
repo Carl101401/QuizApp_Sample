@@ -15,6 +15,7 @@
         android:hint="Username"
         android:textColorHint="#000000"
         android:textColor="#000000"
+        android:inputType="textPersonName"
         android:backgroundTint="#000000" />
 
     <EditText
@@ -48,6 +49,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="10dp"
         android:hint="First Name"
+        android:inputType="textPersonName"
         android:textColorHint="#000000"
         android:textColor="#000000"
         android:backgroundTint="#000000" />
@@ -59,6 +61,7 @@
         android:layout_below="@id/editFirstnameEditText"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="10dp"
+        android:inputType="textPersonName"
         android:hint="Last Name"
         android:textColorHint="#000000"
         android:textColor="#000000"
@@ -73,6 +76,7 @@
         android:layout_marginTop="10dp"
         android:hint="Year | Section"
         android:textColorHint="#000000"
+        android:inputType="textPersonName"
         android:textColor="#000000"
         android:backgroundTint="#000000" />
 

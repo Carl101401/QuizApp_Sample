@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +32,8 @@ public class AddImageReviewer extends AppCompatActivity {
     Uri image;
     MaterialButton selectImage, uploadImage;
     ImageView imageView;
+    private int imageCounter = 1;
+
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
@@ -45,7 +48,6 @@ public class AddImageReviewer extends AppCompatActivity {
             }
         }
     });
-    int imageCounter = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,20 @@ public class AddImageReviewer extends AppCompatActivity {
         selectImage = findViewById(R.id.selectImage);
         uploadImage = findViewById(R.id.uploadImage);
 
+        com.google.android.material.button.MaterialButton viewTextButton = findViewById(R.id.ViewImageButton);
+        viewTextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Define the Intent to start a new activity (replace NewActivity.class with your desired activity)
+                Intent intent = new Intent(AddImageReviewer.this, TeacherImageReviewer.class);
+
+                // Add any extras or data you want to pass to the new activity
+                // intent.putExtra("key", "value");
+
+                // Start the new activity
+                startActivity(intent);
+            }
+        });
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +94,10 @@ public class AddImageReviewer extends AppCompatActivity {
     }
 
     private void uploadImage(Uri uri) {
-        String customImageName = "Quiz_Reviewer_Number_" + imageCounter;
+
+        SharedPreferences preferences = getSharedPreferences("ImageCounterPrefs", MODE_PRIVATE);
+        final int[] imageCounter = {preferences.getInt("imageCounter", 1)}; // Default value is 1
+        String customImageName = "Quiz_Reviewer_Number_" + imageCounter[0];
 
         StorageReference reference = storageReference.child("images/" + customImageName);
 
@@ -86,8 +105,12 @@ public class AddImageReviewer extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(AddImageReviewer.this, "Image Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-                imageCounter++;
+                imageCounter[0]++;
 
+                // Save the updated videoCounter value to SharedPreferences
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("imageCounter", imageCounter[0]);
+                editor.apply();
                 // Reset image and clear ImageView
                 image = null;
                 Glide.with(AddImageReviewer.this).clear(imageView);
