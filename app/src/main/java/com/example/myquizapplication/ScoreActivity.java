@@ -7,7 +7,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -212,4 +214,25 @@ public class ScoreActivity extends AppCompatActivity {
             score50Sound.release();
         }
     }
+    @Override
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+        // Intercept the Back button press
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // Intercept the Home button press
+        if ((keyCode == KeyEvent.KEYCODE_HOME)) {
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }
