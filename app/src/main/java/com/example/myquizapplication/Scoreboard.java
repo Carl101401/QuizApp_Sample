@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,6 +39,8 @@ public class Scoreboard extends AppCompatActivity {
     private FirebaseFirestore firestore;
     private RecyclerView recyclerView;
     private Spinner sortSpinner1;
+    private Button deleteButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +81,97 @@ public class Scoreboard extends AppCompatActivity {
                 // Do nothing or provide a default sorting option
             }
         });
-
+        deleteButton = findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeleteConfirmationDialog();
+            }
+        });
         // Retrieve scoreboard data
         retrieveScoreboardData();
     }
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(Scoreboard.this);
+        builder.setTitle("Delete User");
+        builder.setMessage("Enter first name, last name, and quiz number:");
+
+        // Set up the input
+        final EditText inputFirstName = new EditText(Scoreboard.this);
+        final EditText inputLastName = new EditText(Scoreboard.this);
+        final EditText inputQuizNumber = new EditText(Scoreboard.this);
+
+        // Specify the type of input expected
+        inputFirstName.setHint("First Name");
+        inputLastName.setHint("Last Name");
+        inputQuizNumber.setHint("Quiz Number");
+
+        // Add EditText fields to the dialog
+        LinearLayout layout = new LinearLayout(Scoreboard.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(inputFirstName);
+        layout.addView(inputLastName);
+        layout.addView(inputQuizNumber);
+        builder.setView(layout);
+
+        // Set up the buttons
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String firstName = inputFirstName.getText().toString().trim();
+                String lastName = inputLastName.getText().toString().trim();
+                String quizNumber = inputQuizNumber.getText().toString().trim();
+                // Perform deletion logic here
+                deleteUser(firstName, lastName, quizNumber);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+
+    private void deleteUser(String firstName, String lastName, String quizNumber) {
+        // Delete the user from Firestore database
+        firestore.collection("StudentsScore")
+                .whereEqualTo("firstName", firstName)
+                .whereEqualTo("lastName", lastName)
+                .whereEqualTo("quizNumber", Integer.parseInt(quizNumber))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        documentSnapshot.getReference().delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(Scoreboard.this, "User deleted successfully", Toast.LENGTH_SHORT).show();
+                                        retrieveScoreboardData(); // Refresh scoreboard data after deletion
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(Scoreboard.this, "Error deleting user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(Scoreboard.this, "Error deleting user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+
+
 
     private void retrieveScoreboardData() {
         firestore.collection("StudentsScore")

@@ -60,7 +60,19 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
-      tools:listitem="@layout/item_category"
       app:layout_constraintTop_toBottomOf="@+id/toolbar2"
-      app:layout_constraintVertical_bias="0.0" />
+      app:layout_constraintVertical_bias="0.0"
+      tools:listitem="@layout/item_category" />
+
+  <ImageView
+      android:id="@+id/imageView3"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginStart="70dp"
+      android:layout_marginEnd="20dp"
+      app:layout_constraintBottom_toTopOf="@+id/recyCategory"
+      app:layout_constraintEnd_toStartOf="@+id/textView"
+      app:layout_constraintStart_toStartOf="@+id/toolbar2"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/recycle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -82,21 +82,11 @@ public class GrideAdapter extends BaseAdapter {
         return view1;
     }
 
-    public void deleteSet(int position) {
-        // Update your data model to remove the set at the specified position
-        // This depends on how your data is structured; you might have a List or other data structure
-        if (position > 0 && position <= sets) {
-            sets--;
-            notifyDataSetChanged();
-        }
-    }
-
     public void onSetLongPress(int position) {
     }
 
     public interface GridListener {
         void addSets();
-        void deleteSet(int position);
         void onSetLongPress(int position);
     }
 }

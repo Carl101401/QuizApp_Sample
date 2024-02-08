@@ -107,5 +107,8 @@ public class AddQuestionActivity extends AppCompatActivity {
         });
 
     }
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
+    }
 
 }

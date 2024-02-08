@@ -221,12 +221,6 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // Intercept the Home button press
         if ((keyCode == KeyEvent.KEYCODE_HOME)) {

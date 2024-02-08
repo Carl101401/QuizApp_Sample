@@ -2,16 +2,11 @@ package com.example.myquizapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
 
 import com.example.myquizapplication.Adapters.GrideAdapter;
 import com.example.myquizapplication.databinding.ActivitySetsBinding;
@@ -22,11 +17,11 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SetsActivity extends AppCompatActivity {
 
     private ActivitySetsBinding binding;
+    private String key;
     private FirebaseDatabase database;
     private GrideAdapter adapter;
-    private String key;
-    private static final long LONG_PRESS_DURATION = 10000; // 10 seconds
-    private Handler longPressHandler = new Handler();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +30,8 @@ public class SetsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         getSupportActionBar().hide();
 
-        database = FirebaseDatabase.getInstance();
         key = getIntent().getStringExtra("key");
+        database = FirebaseDatabase.getInstance();
 
         ImageView setBackArrow = findViewById(R.id.imageSetBack);
         setBackArrow.setOnClickListener(new View.OnClickListener() {
@@ -47,8 +42,10 @@ public class SetsActivity extends AppCompatActivity {
             }
         });
 
+        // Assuming gridView is your GridView instance
         adapter = new GrideAdapter(getIntent().getIntExtra("sets", 0),
                 getIntent().getStringExtra("category"), key, new GrideAdapter.GridListener() {
+
 
             @Override
             public void addSets() {
@@ -58,8 +55,12 @@ public class SetsActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    // Increment the number of sets
+                                    getIntent().putExtra("sets", getIntent().getIntExtra("sets", 0) + 1);
+                                    // Notify the adapter and show toast message
                                     adapter.sets++;
                                     adapter.notifyDataSetChanged();
+                                    Toast.makeText(SetsActivity.this, "Quiz Added", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(SetsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
@@ -68,68 +69,17 @@ public class SetsActivity extends AppCompatActivity {
             }
 
 
-            @Override
-            public void deleteSet(int position) {
-                // TODO: Implement your logic to delete the set data in the Realtime Database
-                String setNodeKey = "categories/" + key + "/sets/" + position; // Adjust the path based on your database structure
-
-                database.getReference().child(setNodeKey).removeValue()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    // Update the UI after successful deletion
-                                    int updatedSets = getIntent().getIntExtra("sets", 0) - 1;
-                                    getIntent().putExtra("sets", updatedSets);
-                                    adapter.sets = updatedSets;
-                                    adapter.notifyDataSetChanged();
-
-                                    Toast.makeText(SetsActivity.this, "Set deleted successfully", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(SetsActivity.this, "Error deleting set: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-
-
-            // setRef.removeValue();
-
 
 
             @Override
             public void onSetLongPress(int position) {
-                showDeleteConfirmationDialog(position);
+                // Add your logic here if needed
             }
         });
 
         binding.gridView.setAdapter(adapter);
     }
-
-    private void showDeleteConfirmationDialog(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm Deletion")
-                .setMessage("Are you sure you want to delete this set?")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        deleteSet(position);
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
-
-        // Schedule the deletion after a certain time
-        longPressHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                deleteSet(position);
-            }
-        }, LONG_PRESS_DURATION);
-    }
-
-    private void deleteSet(int position) {
-        adapter.onSetLongPress(position);
-        longPressHandler.removeCallbacksAndMessages(null);
+    public void onBackPressed() {
+        // Do nothing or add a message if you want
     }
 }

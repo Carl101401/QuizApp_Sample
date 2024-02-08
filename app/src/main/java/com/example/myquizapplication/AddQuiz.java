@@ -1,10 +1,12 @@
 package com.example.myquizapplication;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.example.myquizapplication.Adapters.CategoryAdapter;
 import com.example.myquizapplication.Models.CategoryModel;
@@ -22,7 +25,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -67,6 +72,15 @@ public class AddQuiz extends AppCompatActivity {
 
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.item_add_category_dialog);
+
+
+        ImageView imageView = findViewById(R.id.imageView3);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeleteCategoryDialog();
+            }
+        });
 
         ImageView setBackArrow = findViewById(R.id.imageAddQuizBack);
         setBackArrow.setOnClickListener(new View.OnClickListener() {
@@ -150,17 +164,12 @@ public class AddQuiz extends AppCompatActivity {
 
             }
         });
-
-
-
         binding.addCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.show();
             }
         });
-
-
         fetchImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,7 +180,6 @@ public class AddQuiz extends AppCompatActivity {
 
             }
         });
-
         UploadCategory.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -191,6 +199,111 @@ public class AddQuiz extends AppCompatActivity {
 
             }
 
+        });
+    }
+    private void showDeleteCategoryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Category");
+        builder.setMessage("Enter the category name to delete:");
+
+        // Create an EditText for user input
+        final EditText input = new EditText(this);
+        input.setHint("Category Name"); // Set hint for the EditText
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        builder.setView(input);
+
+        // Set up the buttons for dialog
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String categoryName = input.getText().toString().trim();
+                if (!categoryName.isEmpty()) {
+                    deleteCategory(categoryName);
+                } else {
+                    Toast.makeText(AddQuiz.this, "Please enter a category name", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+    private void deleteCategory(String categoryName) {
+        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference().child("categories");
+
+        // Query to find the category with the matching name
+        Query categoryQuery = categoriesRef.orderByChild("categoryName").equalTo(categoryName);
+
+        categoryQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot categorySnapshot : dataSnapshot.getChildren()) {
+                        String categoryKey = categorySnapshot.getKey();
+
+                        // Delete the category
+                        categorySnapshot.getRef().removeValue()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(AddQuiz.this, "Category deleted successfully", Toast.LENGTH_SHORT).show();
+                                        // Also delete associated sets
+                                        deleteSetsForCategory(categoryKey);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(AddQuiz.this, "Failed to delete category: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                } else {
+                    Toast.makeText(AddQuiz.this, "Category not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(AddQuiz.this, "Failed to delete category: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void deleteSetsForCategory(String categoryKey) {
+        DatabaseReference setsRef = FirebaseDatabase.getInstance().getReference().child("sets");
+
+        // Query to find sets with the matching category key
+        Query setsQuery = setsRef.orderByChild("category").equalTo(categoryKey);
+
+        setsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot setSnapshot : dataSnapshot.getChildren()) {
+                        // Delete each set
+                        setSnapshot.getRef().removeValue()
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(AddQuiz.this, "Failed to delete set: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(AddQuiz.this, "Failed to delete sets: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -233,7 +346,6 @@ public class AddQuiz extends AppCompatActivity {
         });
 
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
