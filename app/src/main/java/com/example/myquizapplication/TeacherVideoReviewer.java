@@ -163,9 +163,9 @@ public class TeacherVideoReviewer extends AppCompatActivity {
         // Find the highest video number among existing videos
         for (TeacherVideo video : arrayList) {
             String title = video.getTitle();
-            if (title.startsWith("Quiz_Reviewer_Number_")) {
+            if (title.startsWith("Quiz Reviewer      Number ")) {
                 try {
-                    int number = Integer.parseInt(title.substring("Quiz_Reviewer_Number_".length()));
+                    int number = Integer.parseInt(title.substring("Quiz Reviewer      Number ".length()));
                     if (number > lastVideoNumber) {
                         lastVideoNumber = number;
                     }
@@ -178,11 +178,11 @@ public class TeacherVideoReviewer extends AppCompatActivity {
         // Renumber the videos sequentially starting from the next number after the last video number
         for (int i = 0; i < arrayList.size(); i++) {
             TeacherVideo video = arrayList.get(i);
-            if (video.getTitle().startsWith("Quiz_Reviewer_Number_")) {
+            if (video.getTitle().startsWith("Quiz Reviewer      Number ")) {
                 // If the title already has a number, keep it unchanged
                 continue;
             }
-            video.setTitle("Quiz_Reviewer_Number_" + (++lastVideoNumber));
+            video.setTitle("Quiz Reviewer      Number " + (++lastVideoNumber));
         }
 
         // Save the updated videoCounter value to SharedPreferences

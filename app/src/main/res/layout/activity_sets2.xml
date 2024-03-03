@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/two"
+    android:background="#FBE057"
     tools:context=".SetsActivity2">
+    <!-- android:background="@drawable/two" -->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -27,7 +28,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_keyboard_backspace_24"
         app:tint="@color/white" />
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
@@ -40,7 +40,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"

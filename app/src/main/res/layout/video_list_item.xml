@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80sp"
-    android:padding="10sp">
-    
+    android:layout_height="150sp"
+    android:padding="10sp"
+    android:textAlignment="center">
+
     <ImageView
-        android:layout_width="80sp"
-        android:layout_height="60sp"
-        android:layout_centerVertical="true"
         android:id="@+id/ListItemVideo"
-        android:scaleType="centerCrop"/>
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/ListVideoTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="10sp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         android:layout_toEndOf="@id/ListItemVideo"
+        android:background="#E6000000"
         android:maxLines="2"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="22sp" />
-
 
 
 </RelativeLayout>

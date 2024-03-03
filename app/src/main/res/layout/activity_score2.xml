@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     android:background="#F4FF81"
     tools:context=".ScoreActivity">
-
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar4"
         android:layout_width="match_parent"
@@ -18,7 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
@@ -32,7 +29,6 @@
         app:layout_constraintEnd_toEndOf="@+id/toolbar4"
         app:layout_constraintStart_toStartOf="@+id/toolbar4"
         app:layout_constraintTop_toTopOf="@+id/toolbar4" />
-
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,12 +40,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar4">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/toolbarBack">
-
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnQuit"
                 android:layout_width="120dp"
@@ -64,7 +58,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView9" />
-
             <TextView
                 android:id="@+id/totalWrong"
                 android:layout_width="wrap_content"
@@ -77,7 +70,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageView9"
                 app:layout_constraintStart_toEndOf="@+id/imageView9"
                 app:layout_constraintTop_toTopOf="@+id/imageView9" />
-
             <ImageView
                 android:id="@+id/imageView9"
                 android:layout_width="30dp"
@@ -87,7 +79,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView8"
                 app:srcCompat="@drawable/decline" />
-
             <TextView
                 android:id="@+id/totalRight"
                 android:layout_width="wrap_content"
@@ -100,7 +91,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageView8"
                 app:layout_constraintStart_toEndOf="@+id/imageView8"
                 app:layout_constraintTop_toTopOf="@+id/imageView8" />
-
             <ImageView
                 android:id="@+id/imageView8"
                 android:layout_width="30dp"
@@ -110,7 +100,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView6"
                 app:srcCompat="@drawable/checked" />
-
             <ImageView
                 android:id="@+id/imageView6"
                 android:layout_width="30dp"
@@ -120,7 +109,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView5"
                 app:srcCompat="@drawable/all" />
-
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="100dp"
@@ -130,7 +118,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/reward" />
-
             <TextView
                 android:id="@+id/totalQuestion"
                 android:layout_width="wrap_content"
@@ -143,7 +130,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageView6"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"
                 app:layout_constraintTop_toTopOf="@+id/imageView6" />
-
             <com.mikhaellopez.circularprogressbar.CircularProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="100dp"
@@ -156,10 +142,6 @@
                 app:cpb_round_border="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imageView6" />
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

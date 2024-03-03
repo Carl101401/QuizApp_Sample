@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/studentslog"
+    android:background="#FBE057"
     tools:context=".LoginPage">
+    <!-- android:background="@drawable/studentslog" -->
 
     <TextView
         android:id="@+id/usernameText"
@@ -69,10 +70,12 @@
         android:layout_marginTop="50dp"
         android:layout_marginRight="50dp"
         android:background="@drawable/rounded_white"
+        android:backgroundTint="@color/background"
         android:text="login"
         android:textColor="@color/black"
         android:textSize="30dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:iconTint="@color/white" />
 
     <ImageView
         android:id="@+id/imageView4"

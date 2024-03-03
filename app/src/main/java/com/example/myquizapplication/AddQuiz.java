@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -73,8 +74,10 @@ public class AddQuiz extends AppCompatActivity {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.item_add_category_dialog);
 
+        fetchCategories();
 
-        ImageView imageView = findViewById(R.id.imageView3);
+
+        ImageView imageView = findViewById(R.id.LockAndUnlock);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +131,14 @@ public class AddQuiz extends AppCompatActivity {
         binding.recyCategory.setLayoutManager(layoutManager);
         adapter = new CategoryAdapter(this, list);
         binding.recyCategory.setAdapter(adapter);
+        ImageView LockAndUnlockImage = findViewById(R.id.LockAndUnlock);
+        LockAndUnlockImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImageChoiceDialog();
+            }
+        });
+
 
         database.getReference().child("categories").addValueEventListener(new ValueEventListener() {
             @Override
@@ -201,14 +212,218 @@ public class AddQuiz extends AppCompatActivity {
 
         });
     }
-    private void showDeleteCategoryDialog() {
+    private void showImageChoiceDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose an option");
+
+        // Define the lock and unlock images
+        int lockImage = R.drawable.lock; // Change "lock" to the actual name of your lock image resource
+        int unlockImage = R.drawable.unlock; // Change "unlock" to the actual name of your unlock image resource
+
+        // Create an array of image names
+        final String[] imageNames = {"Lock", "Unlock"};
+
+        // Add the options (images) to the dialog
+        builder.setItems(imageNames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Handle the click event for each image choice
+                switch (i) {
+                    case 0:
+                        // Handle click for Lock image
+                        showLockCategoryDialog();
+                        break;
+                    case 1:
+                        // Handle click for Unlock image
+                        showUnlockCategoryDialog();
+                        break;
+                }
+            }
+        });
+
+        // Show the dialog
+        builder.show();
+    }
+
+    private void showLockCategoryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Lock Category");
+
+        // Set up the input field for category name
+        final EditText input = new EditText(this);
+        input.setHint("Enter Category Name");
+        builder.setView(input);
+
+        // Set up the buttons for dialog
+        builder.setPositiveButton("Lock", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String categoryName = input.getText().toString().trim();
+                if (!categoryName.isEmpty()) {
+                    // Lock the category with the entered name
+                    lockCategory(categoryName);
+                } else {
+                    Toast.makeText(AddQuiz.this, "Please enter a category name", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Show the dialog
+        builder.show();
+    }
+
+    private void showUnlockCategoryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Unlock Category");
+
+        // Set up the input field for category name
+        final EditText input = new EditText(this);
+        input.setHint("Enter Category Name");
+        builder.setView(input);
+
+        // Set up the buttons for dialog
+        builder.setPositiveButton("Unlock", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String categoryName = input.getText().toString().trim();
+                if (!categoryName.isEmpty()) {
+                    // Unlock the category with the entered name
+                    unlockCategory(categoryName);
+                } else {
+                    Toast.makeText(AddQuiz.this, "Please enter a category name", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Show the dialog
+        builder.show();
+    }
+
+
+    private void lockCategory(String categoryName) {
+        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference().child("categories");
+        Query categoryQuery = categoriesRef.orderByChild("categoryName").equalTo(categoryName);
+
+        categoryQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot categorySnapshot : dataSnapshot.getChildren()) {
+                        // Lock the category by updating its locked status to true
+                        categorySnapshot.getRef().child("locked").setValue(true)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(AddQuiz.this, "Category locked: " + categoryName, Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(AddQuiz.this, "Failed to lock category: " + categoryName, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                } else {
+                    Toast.makeText(AddQuiz.this, "Category not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(AddQuiz.this, "Failed to lock category: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void unlockCategory(String categoryName) {
+        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference().child("categories");
+        Query categoryQuery = categoriesRef.orderByChild("categoryName").equalTo(categoryName);
+
+        categoryQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot categorySnapshot : dataSnapshot.getChildren()) {
+                        // Unlock the category by updating its locked status to false
+                        categorySnapshot.getRef().child("locked").setValue(false)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(AddQuiz.this, "Category unlocked: " + categoryName, Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(AddQuiz.this, "Failed to unlock category: " + categoryName, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                } else {
+                    Toast.makeText(AddQuiz.this, "Category not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(AddQuiz.this, "Failed to unlock category: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchCategories() {
+        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference().child("categories");
+        categoriesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot categorySnapshot : dataSnapshot.getChildren()) {
+                    String categoryId = categorySnapshot.getKey();
+                    String categoryName = categorySnapshot.child("categoryName").getValue(String.class);
+                    Boolean locked = categorySnapshot.child("locked").getValue(Boolean.class);
+                    if (locked != null && locked.booleanValue()) {
+                        // Category is locked
+                        Toast.makeText(AddQuiz.this, "Category is locked: " + categoryName, Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Category is unlocked or the "locked" field doesn't exist
+                        // Proceed with displaying the category or performing any related actions
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle onCancelled event
+            }
+        });
+    }
+
+
+
+    private void showDeleteCategoryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogTheme);
         builder.setTitle("Delete Category");
         builder.setMessage("Enter the category name to delete:");
 
         // Create an EditText for user input
         final EditText input = new EditText(this);
-        input.setHint("Category Name"); // Set hint for the EditText
+        input.setHint("Category Name");
+        input.setHintTextColor(Color.BLACK);
+        input.setTextColor(Color.BLACK);
+        input.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -306,7 +521,6 @@ public class AddQuiz extends AppCompatActivity {
             }
         });
     }
-
     private void uploadData() {
 
         final StorageReference reference = storage.getReference().child("category").child(new Date().getTime()+"");

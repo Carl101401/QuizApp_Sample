@@ -154,9 +154,9 @@ public class TeacherImageReviewer extends AppCompatActivity {
         // Find the highest image number among existing images
         for (TeacherImage image : arrayList) {
             String title = image.getTitle();
-            if (title.startsWith("Quiz_Reviewer_Number_")) {
+            if (title.startsWith("Quiz Reviewer      Number ")) {
                 try {
-                    int number = Integer.parseInt(title.substring("Quiz_Reviewer_Number_".length()));
+                    int number = Integer.parseInt(title.substring("Quiz Reviewer      Number ".length()));
                     if (number > lastImageNumber) {
                         lastImageNumber = number;
                     }
@@ -169,11 +169,11 @@ public class TeacherImageReviewer extends AppCompatActivity {
         // Renumber the images sequentially starting from the next number after the last image number
         for (int i = 0; i < arrayList.size(); i++) {
             TeacherImage image = arrayList.get(i);
-            if (image.getTitle().startsWith("Quiz_Reviewer_Number_")) {
+            if (image.getTitle().startsWith("Quiz Reviewer      Number ")) {
                 // If the title already has a number, keep it unchanged
                 continue;
             }
-            image.setTitle("Quiz_Reviewer_Number_" + (++lastImageNumber));
+            image.setTitle("Quiz Reviewer      Number " + (++lastImageNumber));
         }
 
         // Save the updated imageCounter value to SharedPreferences

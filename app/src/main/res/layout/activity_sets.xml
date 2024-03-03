@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/one"
+    android:background="#FBE057"
     tools:context=".SetsActivity">
+    <!--  android:background="@drawable/one" -->
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

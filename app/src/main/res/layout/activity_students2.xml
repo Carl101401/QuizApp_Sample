@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".Students2">
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="0dp"
@@ -27,7 +26,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_keyboard_backspace_24"
         app:tint="@color/white" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -41,8 +39,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/toolbar2"
         app:layout_constraintTop_toTopOf="@+id/toolbar2" />
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyCategory"
         android:layout_width="0dp"

@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/three"
+    android:background="#FBE057"
     tools:context=".Students">
+    <!-- android:background="@drawable/three" -->
 
     <TextView
         android:id="@+id/Studentlist"
@@ -104,7 +105,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="Add Student" />
+            android:backgroundTint="@color/background"
+            android:text="Add Student"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/viewbutton"
@@ -112,7 +116,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="View Student" />
+            android:backgroundTint="@color/white"
+            android:text="View Student"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/editbutton"

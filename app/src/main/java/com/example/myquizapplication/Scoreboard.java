@@ -1,9 +1,12 @@
 package com.example.myquizapplication;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,61 +15,71 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
-
+import android.os.Handler;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-public class Scoreboard extends AppCompatActivity {
+public class Scoreboard extends AppCompatActivity implements ScoreAdapter.OnLongItemClickListener {
 
     private static final String TAG = "Scoreboard";
 
     private FirebaseFirestore firestore;
     private RecyclerView recyclerView;
-    private Spinner sortSpinner1;
+    private Spinner sortSpinner1, sortSpinner2;
     private Button deleteButton;
+    private boolean isLongPressed = false;
+    private ScoreAdapter adapter; // Declare the adapter as a member variable
+    private List<Score> scoreList = new ArrayList<>();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scoreboard);
-
         firestore = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.recyclerView);
         sortSpinner1 = findViewById(R.id.sortSpinner1);
+        sortSpinner2 = findViewById(R.id.sortSpinner2);
+
+        adapter = new ScoreAdapter(scoreList, this);
+        recyclerView.setAdapter(adapter);
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Generate items from Quiz1 to Quiz100 for the Spinner
+        // spinner 1
         List<String> sortOptions = new ArrayList<>();
-        sortOptions.add("Asc");
-        sortOptions.add("Desc");
+        sortOptions.add("Quiz Number ↑ ");
+        sortOptions.add("Quiz Number ↓");
+        //spinner 2
+        List<String> sortOptions2 = new ArrayList<>();
+        sortOptions2.add(""); // Blank option
+        sortOptions2.add("First Name");
+        sortOptions2.add("Last Name");
 
         // Convert the list to an array
         String[] sortOptionsArray = sortOptions.toArray(new String[0]);
-
+        String[] sortOptionsArray2 = sortOptions2.toArray(new String[0]);
         // Set up the adapter for the Spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, sortOptionsArray);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner1.setAdapter(spinnerAdapter);
+        ArrayAdapter<String> spinnerAdapter2 = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, sortOptionsArray2);
+        spinnerAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortSpinner2.setAdapter(spinnerAdapter2);
 
         // Set up a listener for Spinner item selection
         sortSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -81,6 +94,20 @@ public class Scoreboard extends AppCompatActivity {
                 // Do nothing or provide a default sorting option
             }
         });
+        sortSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Handle sorting based on the selected option
+                if (position != 0) {
+                    retrieveScoreboardData();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing or provide a default sorting option
+            }
+        });
         deleteButton = findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,19 +115,85 @@ public class Scoreboard extends AppCompatActivity {
                 showDeleteConfirmationDialog();
             }
         });
+        recyclerView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                isLongPressed = true;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isLongPressed) {
+                            // Get the selected item from the RecyclerView
+                            int position = recyclerView.getChildAdapterPosition(v);
+                            Score selectedScore = adapter.getItem(position);
+
+                            // Extract firstName, lastName, and quizNumber from the selected item
+                            String firstName = selectedScore.getFirstName();
+                            String lastName = selectedScore.getLastName();
+                            String quizNumber = String.valueOf(selectedScore.getQuizNumber());
+
+                            // Show the edit confirmation dialog
+                            showEditConfirmationDialog(firstName, lastName, quizNumber);
+                        }
+                    }
+                }, 5000); // 5 seconds delay
+                return true;
+            }
+        });
+
+        recyclerView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                isLongPressed = true;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isLongPressed) {
+                            // Get the selected item from the RecyclerView
+                            int position = recyclerView.getChildAdapterPosition(v);
+                            Score selectedScore = adapter.getItem(position);
+
+                            // Extract firstName, lastName, and quizNumber from the selected item
+                            String firstName = selectedScore.getFirstName();
+                            String lastName = selectedScore.getLastName();
+                            String quizNumber = String.valueOf(selectedScore.getQuizNumber());
+
+                            // Show the edit confirmation dialog
+                            showEditConfirmationDialog(firstName, lastName, quizNumber);
+                        }
+                    }
+                }, 5000); // 5 seconds delay
+                return true;
+            }
+        });
+
         // Retrieve scoreboard data
         retrieveScoreboardData();
+
     }
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(Scoreboard.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogTheme);
         builder.setTitle("Delete User");
         builder.setMessage("Enter first name, last name, and quiz number:");
 
         // Set up the input
         final EditText inputFirstName = new EditText(Scoreboard.this);
+        inputFirstName.setHintTextColor(Color.BLACK);
+        inputFirstName.setTextColor(Color.BLACK);
+        inputFirstName.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+
         final EditText inputLastName = new EditText(Scoreboard.this);
+        inputLastName.setHintTextColor(Color.BLACK);
+        inputLastName.setTextColor(Color.BLACK);
+        inputLastName.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+
         final EditText inputQuizNumber = new EditText(Scoreboard.this);
+        inputQuizNumber.setHintTextColor(Color.BLACK);
+        inputQuizNumber.setTextColor(Color.BLACK);
+        inputQuizNumber.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
 
         // Specify the type of input expected
         inputFirstName.setHint("First Name");
@@ -122,8 +215,15 @@ public class Scoreboard extends AppCompatActivity {
                 String firstName = inputFirstName.getText().toString().trim();
                 String lastName = inputLastName.getText().toString().trim();
                 String quizNumber = inputQuizNumber.getText().toString().trim();
-                // Perform deletion logic here
-                deleteUser(firstName, lastName, quizNumber);
+
+                // Check if any of the fields are blank
+                if (firstName.isEmpty() || lastName.isEmpty() || quizNumber.isEmpty()) {
+                    // Display a toast message or handle the case where any field is blank
+                    Toast.makeText(Scoreboard.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Perform deletion logic here
+                    deleteUser(firstName, lastName, quizNumber);
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -137,8 +237,6 @@ public class Scoreboard extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
-
 
     private void deleteUser(String firstName, String lastName, String quizNumber) {
         // Delete the user from Firestore database
@@ -170,7 +268,136 @@ public class Scoreboard extends AppCompatActivity {
                 });
     }
 
+    private void showEditConfirmationDialog(String firstName, String lastName, String quizNumber) {
+        // Retrieve the data to display in the dialog
+        firestore.collection("StudentsScore")
+                .whereEqualTo("firstName", firstName)
+                .whereEqualTo("lastName", lastName)
+                .whereEqualTo("quizNumber", Integer.parseInt(quizNumber))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        String message = "First Name: " + firstName + "\n" +
+                                "Last Name: " + lastName + "\n" +
+                                "Quiz Number: " + quizNumber + "\n" +
+                                "Score: " + documentSnapshot.getLong("correct");
 
+                        // Build the dialog with the retrieved data
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogTheme);
+                        builder.setTitle("Edit Confirmation");
+                        builder.setMessage(message);
+
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Show the dialog for editing the data
+                                showEditDialog(firstName, lastName, quizNumber);
+                            }
+                        });
+
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(Scoreboard.this, "Error retrieving user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+    private void showEditDialog(String firstName, String lastName, String quizNumber) {
+        // Create an AlertDialog for editing data
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogTheme);
+        builder.setTitle("Edit Student Data");
+
+        // Set up the input fields
+        final EditText editFirstName = new EditText(this);
+        editFirstName.setHintTextColor(Color.BLACK);
+        editFirstName.setTextColor(Color.BLACK);
+        editFirstName.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+        final EditText editLastName = new EditText(this);
+        editLastName.setHintTextColor(Color.BLACK);
+        editLastName.setTextColor(Color.BLACK);
+        editLastName.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+        final EditText editQuizNumber = new EditText(this);
+        editQuizNumber.setHintTextColor(Color.BLACK);
+        editQuizNumber.setTextColor(Color.BLACK);
+        editQuizNumber.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+
+        // Set the initial values
+        editFirstName.setText(firstName);
+        editLastName.setText(lastName);
+        editQuizNumber.setText(quizNumber);
+
+        // Add EditText fields to the dialog
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(editFirstName);
+        layout.addView(editLastName);
+        layout.addView(editQuizNumber);
+        builder.setView(layout);
+
+        // Set up the buttons
+        builder.setPositiveButton("Confirm Edit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Get the edited values
+                String newFirstName = editFirstName.getText().toString().trim();
+                String newLastName = editLastName.getText().toString().trim();
+                String newQuizNumber = editQuizNumber.getText().toString().trim();
+
+                // Check if any of the fields are blank
+                if (newFirstName.isEmpty() || newLastName.isEmpty() || newQuizNumber.isEmpty()) {
+                    // Display a toast message or handle the case where any field is blank
+                    Toast.makeText(Scoreboard.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Perform the edit action
+                    editUser(firstName, lastName, quizNumber, newFirstName, newLastName, newQuizNumber);
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    private void editUser(String oldFirstName, String oldLastName, String oldQuizNumber, String newFirstName, String newLastName, String newQuizNumber) {
+        // Update the document in Firestore with the new values
+        firestore.collection("StudentsScore")
+                .whereEqualTo("firstName", oldFirstName)
+                .whereEqualTo("lastName", oldLastName)
+                .whereEqualTo("quizNumber", Integer.parseInt(oldQuizNumber))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        documentSnapshot.getReference().update("firstName", newFirstName,
+                                        "lastName", newLastName,
+                                        "quizNumber", Integer.parseInt(newQuizNumber))
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(Scoreboard.this, "Data updated successfully", Toast.LENGTH_SHORT).show();
+                                    retrieveScoreboardData(); // Refresh scoreboard data after editing
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(Scoreboard.this, "Error updating data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(Scoreboard.this, "Error updating data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
 
 
     private void retrieveScoreboardData() {
@@ -202,15 +429,11 @@ public class Scoreboard extends AppCompatActivity {
                     Log.d(TAG, "Score List Size: " + scoreList.size());
 
                     applySorting(scoreList);
-
+                    applySortingForSpinner2(scoreList);
                     // Display the data in a RecyclerView
-                    ScoreAdapter adapter = new ScoreAdapter(scoreList, new ScoreAdapter.ScoreClickListener() {
-                        @Override
-                        public void onDeleteClick(Score score) {
-                            // Handle delete click
+                    adapter = new ScoreAdapter(scoreList, this);
 
-                        }
-                    });
+
                     recyclerView.setAdapter(adapter);
                 })
                 .addOnFailureListener(e -> {
@@ -239,6 +462,32 @@ public class Scoreboard extends AppCompatActivity {
             Log.e(TAG, "Sort spinner is null");
             Toast.makeText(Scoreboard.this, "Error applying sorting", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void applySortingForSpinner2(List<Score> scoreList) {
+        if (sortSpinner2 != null) {
+            // Sort the scoreList based on the selected sorting criteria from spinner2
+            Collections.sort(scoreList, new Score.ScoreComparator2(sortSpinner2.getSelectedItemPosition()));
+
+            // Get the existing adapter from the RecyclerView
+            ScoreAdapter adapter = (ScoreAdapter) recyclerView.getAdapter();
+
+            // Notify the adapter that the data set has changed
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            } else {
+                Log.e(TAG, "Adapter is null");
+            }
+        } else {
+            // Handle the case where sortSpinner2 is null
+            Log.e(TAG, "Sort spinner 2 is null");
+            Toast.makeText(Scoreboard.this, "Error applying sorting", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onLongItemClick(Score score) {
+        // Implement the logic to show the edit confirmation dialog
+        showEditConfirmationDialog(score.getFirstName(), score.getLastName(), String.valueOf(score.getQuizNumber()));
     }
 }
 

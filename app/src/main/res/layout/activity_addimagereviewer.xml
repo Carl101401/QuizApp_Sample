@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/five"
+    android:background="#FBE057"
     tools:context=".AddImageReviewer">
+    <!-- android:background="@drawable/five" -->
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/process2"
@@ -25,31 +26,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/addImageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10sp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="30sp"
-        android:layout_marginEnd="10sp"
-        android:layout_marginBottom="10sp"
-        android:text="Select Image" />
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="20sp"
+        android:background="@drawable/toolbarbackcolor_rounded"
+        android:text="Select Image"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:backgroundTint="@color/background" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/uploadImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/selectImage"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/toolbarbackcolor_rounded"
         android:enabled="false"
-        android:text="Upload Image" />
+        android:text="Upload Image"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:backgroundTint="#FFFFFFFF" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/ViewImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/uploadImage"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="20sp"
+        android:layout_marginEnd="50dp"
         android:background="@drawable/toolbarbackcolor_rounded"
         android:text="View Image Reviewer"
         android:textColor="@color/black"
-        app:backgroundTint="@color/toolbarBack" />
+        android:textSize="16sp"
+        app:backgroundTint="@color/background" />
 
 </RelativeLayout>

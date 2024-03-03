@@ -14,11 +14,19 @@ import java.util.List;
 public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHolder> {
 
     private List<Score> scoreList;
+    private OnLongItemClickListener longItemClickListener;
+    private OnLongItemClickListener itemLongClickListener;
 
 
-    public ScoreAdapter(List<Score> scoreList, ScoreClickListener scoreClickListener) {
+
+    public ScoreAdapter(List<Score> scoreList, OnLongItemClickListener listener) {
         this.scoreList = scoreList;
+        this.longItemClickListener = listener;
+    }
 
+
+    public interface OnLongItemClickListener {
+        void onLongItemClick(Score score);
     }
 
     public interface ScoreClickListener {
@@ -61,6 +69,15 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHol
         Score score = scoreList.get(position);
         holder.bind(score);
 
+        Score currentScore = scoreList.get(position);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // Notify the listener about the long click event
+                longItemClickListener.onLongItemClick(currentScore);
+                return true;
+            }
+        });
         holder.firstNameTextView.setText(score.getFirstName());
         holder.lastNameTextView.setText(score.getLastName());
         holder.quizNumberTextView.setText("Quiz Number: " + score.getQuizNumber());
@@ -75,4 +92,9 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHol
     public int getItemCount() {
         return scoreList.size();
     }
+    public Score getItem(int position) {
+        return scoreList.get(position);
+    }
+
 }
+

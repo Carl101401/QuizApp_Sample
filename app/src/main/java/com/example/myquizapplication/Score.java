@@ -108,6 +108,27 @@ public class Score implements Parcelable {
             return Integer.parseInt(quizOptionString.replaceAll("[^0-9]", ""));
         }
     }
+    public static class ScoreComparator2 implements Comparator<Score> {
+
+        private int sortingOption;
+
+        public ScoreComparator2(int sortingOption) {
+            this.sortingOption = sortingOption;
+        }
+
+        @Override
+        public int compare(Score score1, Score score2) {
+            switch (sortingOption) {
+                case 0: // First Name Ascending
+                    return score1.getFirstName().compareToIgnoreCase(score2.getFirstName());
+                case 1: // Last Name Ascending
+                    return score1.getLastName().compareToIgnoreCase(score2.getLastName());
+                default:
+                    return 0;
+            }
+        }
+    }
+
 
 
 

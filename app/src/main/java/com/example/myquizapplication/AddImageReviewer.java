@@ -97,7 +97,7 @@ public class AddImageReviewer extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences("ImageCounterPrefs", MODE_PRIVATE);
         final int[] imageCounter = {preferences.getInt("imageCounter", 1)}; // Default value is 1
-        String customImageName = "Quiz_Reviewer_Number_" + imageCounter[0];
+        String customImageName = "Quiz Reviewer      Number " + imageCounter[0];
 
         StorageReference reference = storageReference.child("images/" + customImageName);
 

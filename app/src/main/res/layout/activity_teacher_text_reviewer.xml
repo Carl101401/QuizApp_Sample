@@ -7,6 +7,9 @@
     android:background="#FFFFFF"
     tools:context=".TeacherTextReviewer">
 
+    <!-- <androidx.recyclerview.widget.RecyclerView -->
+    <!-- android:background="@drawable/nine" -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/teacherTextRecycler"
         android:layout_width="match_parent"
@@ -14,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/nine"
+        android:background="#FBE057"
         android:clipToPadding="false"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"

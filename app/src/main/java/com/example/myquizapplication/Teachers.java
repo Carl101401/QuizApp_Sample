@@ -1,17 +1,13 @@
 package com.example.myquizapplication;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 public class Teachers extends AppCompatActivity {
     TextView teachers, Teacher;
     Button btnstudent, btnscore, btnaddquiz, btnaddreviewer, btnsignout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,14 +17,12 @@ public class Teachers extends AppCompatActivity {
         btnaddquiz = (Button) findViewById(R.id.Addquiz);
         btnaddreviewer= (Button) findViewById(R.id.Addreviewer);
         btnsignout= (Button) findViewById(R.id.Signout);
-
         btnstudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),Students.class);
                 startActivity(intent);
             }
-
         });
         btnscore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +30,6 @@ public class Teachers extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),Scoreboard.class);
                 startActivity(intent);
             }
-
         });
         btnaddquiz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +37,6 @@ public class Teachers extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),AddQuiz.class);
                 startActivity(intent);
             }
-
         });
         btnaddreviewer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +44,6 @@ public class Teachers extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DifferentAddReviewers.class);
                 startActivity(intent);
             }
-
         });
         btnsignout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +51,9 @@ public class Teachers extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),LoginPage.class);
                 startActivity(intent);
             }
-
         });
 
     }
     public void onBackPressed() {
-        // Do nothing or add a message if you want
-        //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();
     }
 }

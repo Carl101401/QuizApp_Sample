@@ -102,7 +102,7 @@ public class AddVideoReviewer extends AppCompatActivity {
         final int[] videoCounter = {preferences.getInt("videoCounter", 1)}; // Default value is 1
 
 
-        final String[] customVideoName = {"Quiz_Reviewer_Number_" + videoCounter[0]};
+        final String[] customVideoName = {"Quiz Reviewer      Number " + videoCounter[0]};
 
         StorageReference reference = storageReference.child("video/" + customVideoName[0]);
 

@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/playquiz"
     tools:context=".PlayQuiz">
+    <!-- android:background="@drawable/playquiz" -->
+
 
     <TextView
         android:id="@+id/total_question"
