@@ -57,7 +57,7 @@
         android:id="@+id/optionContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,11 +74,10 @@
             android:text="option 1"
             android:textAllCaps="false"
             android:textColor="@color/black"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/option2"
@@ -91,12 +90,11 @@
             android:text="option 2"
             android:textAllCaps="false"
             android:textColor="@color/black"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/option1"
-            android:visibility="gone"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/option1" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/option3"
@@ -109,12 +107,11 @@
             android:text="option 3"
             android:textAllCaps="false"
             android:textColor="@color/black"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/option2"
-            android:visibility="gone"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/option2" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/option4"
@@ -128,21 +125,20 @@
             android:text="option 4"
             android:textAllCaps="false"
             android:textColor="@color/black"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/option3"
-            android:visibility="gone"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/option3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="265dp"
-        android:layout_height="175dp"
+        android:layout_height="220dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="142dp"
         android:layout_marginEnd="15dp"
         android:background="@android:color/transparent"
         app:cardBackgroundColor="@android:color/transparent"
@@ -154,7 +150,7 @@
         <TextView
             android:id="@+id/question"
             android:layout_width="246dp"
-            android:layout_height="127dp"
+            android:layout_height="185dp"
             android:layout_gravity="start"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="30dp"
@@ -162,14 +158,14 @@
             android:layout_marginBottom="30dp"
             android:text="1. What is your name?"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
     </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btnNext"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="25dp"
         android:alpha="0.3"
         android:background="@drawable/btn_next_back2"
