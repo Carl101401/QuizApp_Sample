@@ -16,6 +16,7 @@ import com.example.myquizapplication.Models.CategoryModel2;
 import com.example.myquizapplication.databinding.ActivityStudents2Binding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
@@ -81,6 +82,45 @@ public class Students2 extends AppCompatActivity {
             }
         });
     }
+    // Inside Students2 activity
+
+    // Add this method to fetch categories and listen for changes
+    private void fetchCategoriesAndListenForChanges() {
+        DatabaseReference categoriesRef = FirebaseDatabase.getInstance().getReference().child("categories");
+        categoriesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String categoryId = snapshot.getKey();
+                    String categoryName = snapshot.child("categoryName").getValue(String.class);
+                    String categoryImage = snapshot.child("categoryImage").getValue(String.class);
+                    int setNum = snapshot.child("setNum").getValue(Integer.class);
+                    boolean locked = snapshot.child("locked").getValue(Boolean.class);
+
+                    // Update UI based on lock status
+                    if (locked) {
+                        // Category is locked
+                        // Show a message to unlock the category to proceed
+                        Toast.makeText(Students2.this, "Category '" + categoryName + "' is locked. Please unlock to proceed.", Toast.LENGTH_SHORT).show();
+                        // Optionally, you can disable any UI elements related to this category
+                        // For example, if there's a button to select this category, you can disable it
+                    } else {
+                        // Category is unlocked
+                        // Add category to list
+                        list.add(new CategoryModel2(categoryName, categoryImage, categoryId, setNum));
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle onCancelled event
+            }
+        });
+    }
+
     public void onBackPressed() {
     }
 }

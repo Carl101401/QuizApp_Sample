@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.util.Comparator;
+import java.util.Date;
 
 public class Score implements Parcelable {
 
@@ -13,19 +14,17 @@ public class Score implements Parcelable {
     private String lastName;
     private int quizNumber;
     private int correct;
+    private String section; // Add section field
+    private String finishTime; // Change type to String
     private String documentId; // Add this field
 
-    public String getDocumentId() {
-        return documentId;
-    }
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
-    public Score(String firstName, String lastName, int quizNumber, int correct) {
+    public Score(String firstName, String lastName, int quizNumber, int correct, String section, String finishTime) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.quizNumber = quizNumber;
         this.correct = correct;
+        this.section = section;
+        this.finishTime = finishTime;
     }
 
     protected Score(Parcel in) {
@@ -33,6 +32,8 @@ public class Score implements Parcelable {
         lastName = in.readString();
         quizNumber = in.readInt();
         correct = in.readInt();
+        section = in.readString();
+        finishTime = in.readString();
     }
 
     public static final Creator<Score> CREATOR = new Creator<Score>() {
@@ -63,6 +64,22 @@ public class Score implements Parcelable {
         return correct;
     }
 
+    public String getSection() {
+        return section;
+    }
+
+    public String getFinishTime() {
+        return finishTime;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -74,8 +91,9 @@ public class Score implements Parcelable {
         dest.writeString(lastName);
         dest.writeInt(quizNumber);
         dest.writeInt(correct);
+        dest.writeString(section);
+        dest.writeString(finishTime);
     }
-
 
     // ScoreComparator class
     public static class ScoreComparator implements Comparator<Score> {
@@ -88,8 +106,8 @@ public class Score implements Parcelable {
 
         @Override
         public int compare(Score score1, Score score2) {
-            int quizNumber1 = getQuizNumberFromOption(score1.getQuizNumber());
-            int quizNumber2 = getQuizNumberFromOption(score2.getQuizNumber());
+            int quizNumber1 = score1.getQuizNumber();
+            int quizNumber2 = score2.getQuizNumber();
 
             // Handle the special case for sorting "Quiz1" to "Quiz100"
             if (sortingOption == 0) { // Ascending order
@@ -101,13 +119,8 @@ public class Score implements Parcelable {
                 return 0;
             }
         }
-
-        private int getQuizNumberFromOption(int quizOption) {
-            // Extract the numeric part from the Quiz option, e.g., "Quiz1" to 1
-            String quizOptionString = "Quiz" + quizOption;
-            return Integer.parseInt(quizOptionString.replaceAll("[^0-9]", ""));
-        }
     }
+
     public static class ScoreComparator2 implements Comparator<Score> {
 
         private int sortingOption;
@@ -128,8 +141,4 @@ public class Score implements Parcelable {
             }
         }
     }
-
-
-
-
 }

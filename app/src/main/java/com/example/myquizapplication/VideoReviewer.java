@@ -26,7 +26,7 @@
                 setContentView(R.layout.activity_videoreviewer);
                 FirebaseApp.initializeApp(this);
                 RecyclerView recyclerView = findViewById(R.id.recycler);
-                FirebaseStorage.getInstance().getReference().child("video").listAll()
+                FirebaseStorage.getInstance().getReference().child("videos").listAll()
                         .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                     @Override
                     public void onSuccess(ListResult listResult) {

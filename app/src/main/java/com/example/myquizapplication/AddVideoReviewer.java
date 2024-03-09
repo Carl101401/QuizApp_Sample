@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -97,28 +98,27 @@ public class AddVideoReviewer extends AppCompatActivity {
     }
 
     private void uploadVideo(Uri uri) {
-        // Retrieve the current videoCounter value from SharedPreferences
-        SharedPreferences preferences = getSharedPreferences("VideoCounterPrefs", MODE_PRIVATE);
-        final int[] videoCounter = {preferences.getInt("videoCounter", 1)}; // Default value is 1
+        if (uri == null) {
+            Toast.makeText(this, "Please select a video", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        // Extract the video name from the EditText
+        String videoName = ((EditText) findViewById(R.id.videoNameEditText)).getText().toString().trim();
 
-        final String[] customVideoName = {"Quiz Reviewer      Number " + videoCounter[0]};
+        if (videoName.isEmpty()) {
+            Toast.makeText(this, "Please enter the video name", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        StorageReference reference = storageReference.child("video/" + customVideoName[0]);
+        StorageReference reference = storageReference.child("videos/" + videoName);
 
         reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(AddVideoReviewer.this, "Video Uploaded Successfully!", Toast.LENGTH_SHORT).show();
 
-                // Increment videoCounter
-                videoCounter[0]++;
-
-                // Save the updated videoCounter value to SharedPreferences
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putInt("videoCounter", videoCounter[0]);
-                editor.apply();
-
+                // Reset the video and clear ImageView
                 video = null;
                 Glide.with(AddVideoReviewer.this).clear(imageView);
                 uploadVideo.setVisibility(View.GONE);
@@ -137,6 +137,7 @@ public class AddVideoReviewer extends AppCompatActivity {
             }
         });
     }
+
 
     public void onBackPressed() {
         // Do nothing or add a message if you want

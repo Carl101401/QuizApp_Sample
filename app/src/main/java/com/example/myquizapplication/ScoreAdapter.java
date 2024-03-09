@@ -38,7 +38,8 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHol
         TextView lastNameTextView;
         TextView quizNumberTextView;
         TextView scoreTextView;
-
+        TextView sectionTextView;
+        TextView finishTimeTextView;
 
         public ScoreViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -46,7 +47,8 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHol
             lastNameTextView = itemView.findViewById(R.id.lastNameTextView);
             quizNumberTextView = itemView.findViewById(R.id.quizNumberTextView);
             scoreTextView = itemView.findViewById(R.id.scoreTextView);
-
+            sectionTextView = itemView.findViewById(R.id.sectionTextView);
+            finishTimeTextView = itemView.findViewById(R.id.timeFinishTextView);
         }
 
         public void bind(Score score) {
@@ -54,8 +56,11 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHol
             lastNameTextView.setText("Last Name: " + score.getLastName());
             quizNumberTextView.setText("Quiz Number: " + score.getQuizNumber());
             scoreTextView.setText("Score: " + score.getCorrect());
+            sectionTextView.setText("Section: " + score.getSection());
+            finishTimeTextView.setText("Finish Time: " + score.getFinishTime());
         }
     }
+
 
     @NonNull
     @Override

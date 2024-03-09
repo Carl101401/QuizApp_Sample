@@ -30,6 +30,19 @@
         android:singleLine="true"/>
 
     <EditText
+        android:id="@+id/editTextSection"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Section"
+    android:inputType="text"
+    android:textColor="@color/black"
+    android:textColorHint="@color/black"
+    android:backgroundTint="@color/black"
+    android:maxLines="1"
+    android:singleLine="true"
+    android:imeOptions="actionDone"/>
+
+    <EditText
         android:id="@+id/editTextQuizNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

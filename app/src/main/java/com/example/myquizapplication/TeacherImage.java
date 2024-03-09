@@ -1,13 +1,11 @@
 package com.example.myquizapplication;
 
 public class TeacherImage {
-    String title, url;
+    private String title; // Image name
+    private String url;   // Image URL
 
-    public void setTitle(String title) {
+    public TeacherImage(String title, String url) {
         this.title = title;
-    }
-
-    public void setUrl(String url) {
         this.url = url;
     }
 
@@ -15,7 +13,15 @@ public class TeacherImage {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getUrl() {
         return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

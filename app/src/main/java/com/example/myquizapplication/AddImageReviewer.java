@@ -11,7 +11,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,10 +23,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
 
 public class AddImageReviewer extends AppCompatActivity {
     StorageReference storageReference;
@@ -88,30 +94,35 @@ public class AddImageReviewer extends AppCompatActivity {
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Assuming the image URI is obtained from an activity result
                 uploadImage(image);
             }
         });
+
     }
 
     private void uploadImage(Uri uri) {
+        if (uri == null) {
+            Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        SharedPreferences preferences = getSharedPreferences("ImageCounterPrefs", MODE_PRIVATE);
-        final int[] imageCounter = {preferences.getInt("imageCounter", 1)}; // Default value is 1
-        String customImageName = "Quiz Reviewer      Number " + imageCounter[0];
+        // Extract the image name from the EditText
+        String imageName = ((EditText) findViewById(R.id.imageNameEditText)).getText().toString().trim();
 
-        StorageReference reference = storageReference.child("images/" + customImageName);
+        if (imageName.isEmpty()) {
+            Toast.makeText(this, "Please enter the image name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        StorageReference reference = storageReference.child("images/" + imageName);
 
         reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(AddImageReviewer.this, "Image Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-                imageCounter[0]++;
 
-                // Save the updated videoCounter value to SharedPreferences
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putInt("imageCounter", imageCounter[0]);
-                editor.apply();
-                // Reset image and clear ImageView
+                // Reset the image and clear ImageView
                 image = null;
                 Glide.with(AddImageReviewer.this).clear(imageView);
                 uploadImage.setVisibility(View.GONE);
@@ -130,6 +141,10 @@ public class AddImageReviewer extends AppCompatActivity {
             }
         });
     }
+
+
+
+
     public void onBackPressed() {
         // Do nothing or add a message if you want
         //Toast.makeText(Reviewer.this, "Choose back", Toast.LENGTH_SHORT).show();

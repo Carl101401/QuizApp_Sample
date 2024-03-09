@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -60,20 +61,35 @@ public class ImageReviewer extends AppCompatActivity {
                             }
                         });
                         for (StorageReference storageReference : sortedItems) {
-                            Image image = new Image();
-                            image.setTitle(storageReference.getName());
-                            storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            storageReference.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    String url = "https://" + task.getResult().getEncodedAuthority() +
-                                            task.getResult().getEncodedPath() + "?alt=media&token=" +
-                                            task.getResult().getQueryParameters("token").get(0);
-                                    image.setUrl(url);
-                                    arrayList.add(image);
-                                    adapter.notifyDataSetChanged();
+                                public void onSuccess(StorageMetadata storageMetadata) {
+                                    String imageName = storageMetadata.getName();
+                                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            String imageUrl = uri.toString();
+                                            Image image = new Image(imageName, imageUrl);
+                                            arrayList.add(image);
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Handle failure to get download URL
+                                            Log.e("ImageReviewer", "Failed to get download URL for image: " + imageName, e);
+                                        }
+                                    });
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle failure to get metadata
+                                    Log.e("ImageReviewer", "Failed to get metadata for image", e);
                                 }
                             });
                         }
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

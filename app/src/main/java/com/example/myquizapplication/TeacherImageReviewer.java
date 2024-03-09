@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -86,20 +87,35 @@ public class TeacherImageReviewer extends AppCompatActivity {
                         });
 
                         for (StorageReference storageReference : sortedItems) {
-                            TeacherImage teacherImage = new TeacherImage();
-                            teacherImage.setTitle(storageReference.getName());
-                            storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            storageReference.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    String url = "https://" + task.getResult().getEncodedAuthority() +
-                                            task.getResult().getEncodedPath() + "?alt=media&token=" +
-                                            task.getResult().getQueryParameters("token").get(0);
-                                    teacherImage.setUrl(url);
-                                    arrayList.add(teacherImage);
-                                    adapter.notifyDataSetChanged();
+                                public void onSuccess(StorageMetadata storageMetadata) {
+                                    String imageName = storageMetadata.getName();
+                                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            String imageUrl = uri.toString();
+                                            TeacherImage teacherImage = new TeacherImage(imageName, imageUrl);
+                                            arrayList.add(teacherImage);
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Handle failure to get download URL
+                                            Log.e("TeacherImageReviewer", "Failed to get download URL for image: " + imageName, e);
+                                        }
+                                    });
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle failure to get metadata
+                                    Log.e("TeacherImageReviewer", "Failed to get metadata for image", e);
                                 }
                             });
                         }
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -137,7 +153,7 @@ public class TeacherImageReviewer extends AppCompatActivity {
                         arrayList.remove(teacherImage);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(TeacherImageReviewer.this, "Image deleted", Toast.LENGTH_SHORT).show();
-                        updateImageCounter();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -148,40 +164,7 @@ public class TeacherImageReviewer extends AppCompatActivity {
                     }
                 });
     }
-    private void updateImageCounter() {
-        int lastImageNumber = 0;
 
-        // Find the highest image number among existing images
-        for (TeacherImage image : arrayList) {
-            String title = image.getTitle();
-            if (title.startsWith("Quiz Reviewer      Number ")) {
-                try {
-                    int number = Integer.parseInt(title.substring("Quiz Reviewer      Number ".length()));
-                    if (number > lastImageNumber) {
-                        lastImageNumber = number;
-                    }
-                } catch (NumberFormatException e) {
-                    e.printStackTrace(); // Handle invalid number format if necessary
-                }
-            }
-        }
-
-        // Renumber the images sequentially starting from the next number after the last image number
-        for (int i = 0; i < arrayList.size(); i++) {
-            TeacherImage image = arrayList.get(i);
-            if (image.getTitle().startsWith("Quiz Reviewer      Number ")) {
-                // If the title already has a number, keep it unchanged
-                continue;
-            }
-            image.setTitle("Quiz Reviewer      Number " + (++lastImageNumber));
-        }
-
-        // Save the updated imageCounter value to SharedPreferences
-        SharedPreferences preferences = getSharedPreferences("ImageCounterPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("imageCounter", lastImageNumber);
-        editor.apply();
-    }
 
 
 

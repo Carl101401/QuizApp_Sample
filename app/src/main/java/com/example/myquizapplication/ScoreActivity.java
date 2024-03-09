@@ -16,7 +16,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 public class ScoreActivity extends AppCompatActivity {
     ActivityScore2Binding binding;
@@ -76,23 +80,27 @@ public class ScoreActivity extends AppCompatActivity {
     }
     private void showNameInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogStyle);
-        builder.setTitle("Submit Your Name and Your Quiz Number");
+        builder.setTitle("Submit Your Name, Section, and Quiz Number");
         View view = getLayoutInflater().inflate(R.layout.custom_dialog, null);
         builder.setView(view);
+        EditText inputFirstName = view.findViewById(R.id.editTextFirstName);
+        EditText inputLastName = view.findViewById(R.id.editTextLastName);
+        EditText inputQuizNumber = view.findViewById(R.id.editTextQuizNumber);
+        EditText inputSection = view.findViewById(R.id.editTextSection); // New EditText for Section
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                EditText inputFirstName = view.findViewById(R.id.editTextFirstName);
-                EditText inputLastName = view.findViewById(R.id.editTextLastName);
-                EditText inputQuizNumber = view.findViewById(R.id.editTextQuizNumber);
+                long finishTime = System.currentTimeMillis();
+
                 String firstName = inputFirstName.getText().toString().trim();
                 String lastName = inputLastName.getText().toString().trim();
                 String quizNumberText = inputQuizNumber.getText().toString().trim();
-                if (!firstName.isEmpty() && !lastName.isEmpty() && !quizNumberText.isEmpty()) {
+                String section = inputSection.getText().toString().trim(); // Get section text
+                if (!firstName.isEmpty() && !lastName.isEmpty() && !quizNumberText.isEmpty() && !section.isEmpty()) {
                     try {
                         int quizNumber = Integer.parseInt(quizNumberText);
                         // Store the score data in Firestore
-                        storeScoreInFirestore(firstName, lastName, quizNumber, correct, totalQuestion, wrong);
+                        storeScoreInFirestore(firstName, lastName, quizNumber, correct, totalQuestion, wrong, section, finishTime); // Pass section to method
                         Toast.makeText(ScoreActivity.this, "Your score is submitted!", Toast.LENGTH_SHORT).show();
                         // Navigate to the desired activity
                         Intent intent = new Intent(ScoreActivity.this, QuizReviewer.class);
@@ -103,7 +111,7 @@ public class ScoreActivity extends AppCompatActivity {
                         Toast.makeText(ScoreActivity.this, "Invalid Quiz Number", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(ScoreActivity.this, "Please enter your first name, last name, and quiz number", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ScoreActivity.this, "Please enter your first name, last name, section, and quiz number", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -115,8 +123,11 @@ public class ScoreActivity extends AppCompatActivity {
         });
         builder.show();
     }
-    private void storeScoreInFirestore(String firstName, String lastName, int quizNumber, int correct, int totalQuestion, int wrong) {
+
+    private void storeScoreInFirestore(String firstName, String lastName, int quizNumber, int correct, int totalQuestion, int wrong, String section, long finishTime) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        String formattedFinishTime = dateFormat.format(new Date(finishTime));
         if (currentUser != null) {
             String username = currentUser.getEmail().replace("@yourdomain.com", "");
             // Use a combination of firstName and lastName as the document ID
@@ -139,6 +150,9 @@ public class ScoreActivity extends AppCompatActivity {
                     scoreMap.put("wrong", wrong);
                     scoreMap.put("firstName", firstName);
                     scoreMap.put("lastName", lastName);
+                    scoreMap.put("section", section); // Add section to the scoreMap
+                    scoreMap.put("finishTime", formattedFinishTime);
+
                     // Set the scoreMap directly to the document using merge option
                     userScoreRef.set(scoreMap, SetOptions.merge())
                             .addOnSuccessListener(aVoid -> {

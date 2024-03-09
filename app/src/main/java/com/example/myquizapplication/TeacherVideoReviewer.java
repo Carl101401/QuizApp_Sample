@@ -43,7 +43,7 @@ public class TeacherVideoReviewer extends AppCompatActivity {
         final int videoCounter = preferences.getInt("videoCounter", 1); // Default value is 1
 
         RecyclerView recyclerView = findViewById(R.id.recycler);
-        FirebaseStorage.getInstance().getReference().child("video").listAll()
+        FirebaseStorage.getInstance().getReference().child("videos").listAll()
                 .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                     @Override
                     public void onSuccess(ListResult listResult) {
@@ -145,7 +145,7 @@ public class TeacherVideoReviewer extends AppCompatActivity {
                         arrayList.remove(teacherVideo);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(TeacherVideoReviewer.this, "Video deleted", Toast.LENGTH_SHORT).show();
-                        updateVideoCounter();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -157,40 +157,6 @@ public class TeacherVideoReviewer extends AppCompatActivity {
                 });
     }
 
-    private void updateVideoCounter() {
-        int lastVideoNumber = 0;
-
-        // Find the highest video number among existing videos
-        for (TeacherVideo video : arrayList) {
-            String title = video.getTitle();
-            if (title.startsWith("Quiz Reviewer      Number ")) {
-                try {
-                    int number = Integer.parseInt(title.substring("Quiz Reviewer      Number ".length()));
-                    if (number > lastVideoNumber) {
-                        lastVideoNumber = number;
-                    }
-                } catch (NumberFormatException e) {
-                    e.printStackTrace(); // Handle invalid number format if necessary
-                }
-            }
-        }
-
-        // Renumber the videos sequentially starting from the next number after the last video number
-        for (int i = 0; i < arrayList.size(); i++) {
-            TeacherVideo video = arrayList.get(i);
-            if (video.getTitle().startsWith("Quiz Reviewer      Number ")) {
-                // If the title already has a number, keep it unchanged
-                continue;
-            }
-            video.setTitle("Quiz Reviewer      Number " + (++lastVideoNumber));
-        }
-
-        // Save the updated videoCounter value to SharedPreferences
-        SharedPreferences preferences = getSharedPreferences("VideoCounterPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("videoCounter", lastVideoNumber);
-        editor.apply();
-    }
 
 
     @Override
